@@ -4,7 +4,28 @@ class Lot {
     long id
     string name
     string description
-    decimal price
+    string pictureUrl
+    datetime startDate
+    datetime endDate
+    decimal startPrice
+    decimal currentPrice
+    LotCategory category
+    LotStatus status
 }
+
+class LotCategory {
+    long id
+    string name
+    LotCategory? parent
+}
+
+enum LotStatus {
+    ACTIVATED
+    FINISHED
+    DELETED
+}
+
+Lot - LotCategory
+Lot - LotStatus
 
 @enduml
