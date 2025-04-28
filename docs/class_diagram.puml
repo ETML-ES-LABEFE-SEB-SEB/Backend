@@ -1,0 +1,10 @@
+@startuml
+
+class Lot {
+    long id
+    string name
+    string description
+    decimal price
+}
+
+@enduml
