@@ -63,7 +63,7 @@ public class LotCategory {
 
     @Override
     public String toString(){
-        return "Lot{" + "id=" + this.getId()
+        return "LotCategory{" + "id=" + this.getId()
                 + ",name='" + this.getName() + '\'' +
                 ",parent='" + this.getParent() + '\'' + '}';
     }
