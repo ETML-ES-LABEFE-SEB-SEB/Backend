@@ -12,5 +12,5 @@ public class LotNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(LotNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String articleNotFoundHandler(LotNotFoundException ex) { return ex.getMessage(); }
+    String lotNotFoundHandler(LotNotFoundException ex) { return ex.getMessage(); }
 }

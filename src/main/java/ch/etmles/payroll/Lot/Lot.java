@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Entity
@@ -27,14 +28,14 @@ public class Lot {
 
     public Lot(){}
 
-    public Lot(String name, String description, String pictureUrl, BigDecimal startPrice, LocalDateTime startDate, LocalDateTime endDate, LotCategory category, LotStatus status) {
+    public Lot(String name, String description, String pictureUrl, BigDecimal startPrice, String startDate, String endDate, LotCategory category, LotStatus status) {
         this.setName(name);
         this.setDescription(description);
         this.setPictureUrl(pictureUrl);
         this.setStartPrice(startPrice);
         this.setCurrentPrice(startPrice);
-        this.setStartDate(startDate);
-        this.setEndDate(endDate);
+        this.setStartDate(LocalDateTime.parse(startDate));
+        this.setEndDate(LocalDateTime.parse(endDate));
         this.setCategory(category);
         this.setStatus(status);
     }

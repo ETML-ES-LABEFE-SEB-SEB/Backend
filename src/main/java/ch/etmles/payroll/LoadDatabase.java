@@ -26,8 +26,8 @@ public class LoadDatabase {
         return args->{
             log.info("Preloading " + categoryRepository.save(parentCategory));
             log.info("Preloading " + categoryRepository.save(childCategory));
-            log.info("Preloading " + repository.save(new Lot("Lot Test 1", "Test description 1", "https://picsum.photos/id/237/600/400", new BigDecimal("19.95"), LocalDateTime.now(), (LocalDateTime.now()).plusDays(7), parentCategory, LotStatus.ACTIVATED)));
-            log.info("Preloading " + repository.save(new Lot("Lot Test 2", "Test description 2", "https://picsum.photos/id/238/600/400", new BigDecimal("49.95"), LocalDateTime.now(), (LocalDateTime.now()).plusDays(7), childCategory, LotStatus.ACTIVATED)));
+            log.info("Preloading " + repository.save(new Lot("Lot Test 1", "Test description 1", "https://picsum.photos/id/237/600/400", new BigDecimal("19.95"), LocalDateTime.now().toString(), (LocalDateTime.now()).plusDays(7).toString(), parentCategory, LotStatus.ACTIVATED)));
+            log.info("Preloading " + repository.save(new Lot("Lot Test 2", "Test description 2", "https://picsum.photos/id/238/600/400", new BigDecimal("49.95"), LocalDateTime.now().toString(), (LocalDateTime.now()).plusDays(7).toString(), childCategory, LotStatus.ACTIVATED)));
         };
     }
 }
