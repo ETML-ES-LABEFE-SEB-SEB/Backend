@@ -25,6 +25,4 @@ to retrieve the dependencies, compile and run the program for the first time.
 
 ## Test using http requests
 
-Got the file [project]\src\main\java\ch\etmles\payroll\Lot\LotController.java
-
-Before all routes, you will find a curl sample.
+Go to http://localhost:8080/swagger-ui/index.html to test the API.
