@@ -22,6 +22,7 @@ public class Lot {
     private BigDecimal currentPrice;
 
     @ManyToOne
+    @JoinColumn(name="lotCategoryId")
     private LotCategory category;
 
     private LotStatus status;

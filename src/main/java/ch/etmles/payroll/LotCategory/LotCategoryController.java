@@ -42,6 +42,7 @@ public class LotCategoryController {
     */
     @PostMapping("/lotcategories")
     ResponseEntity<LotCategory> newLotCategory(@RequestBody LotCategory lotCategory) {
+        lotCategory.setId(null);
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(lotCategory));
     }
 

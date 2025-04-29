@@ -1,8 +1,6 @@
 package ch.etmles.payroll.LotCategory;
 
-import ch.etmles.payroll.Lot.Lot;
 import jakarta.persistence.*;
-
 import java.util.Objects;
 
 @Entity
@@ -10,8 +8,11 @@ public class LotCategory {
     private @Id
     @GeneratedValue Long id;
 
+    @Column(unique=true)
     private String name;
+
     @OneToOne
+    @JoinColumn(name="lotId")
     private LotCategory parent;
 
     public LotCategory() { }
