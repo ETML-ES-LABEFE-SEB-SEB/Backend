@@ -33,7 +33,7 @@ enum LotStatus {
 }
 
 Lot - LotCategory
-Lot - LotStatus
 Lot - Tag
+Lot - LotStatus
 
 @enduml

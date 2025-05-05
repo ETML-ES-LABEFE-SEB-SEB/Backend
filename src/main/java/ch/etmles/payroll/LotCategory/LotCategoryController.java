@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class LotCategoryController {
@@ -30,7 +31,7 @@ public class LotCategoryController {
     curl -i localhost:8080/lotcategories/1
     */
     @GetMapping("/lotcategories/{id}")
-    LotCategory one(@PathVariable Long id) {
+    LotCategory one(@PathVariable UUID id) {
         return repository.findById(id)
                 .orElseThrow(() -> new LotCategoryNotFoundException(id));
     }
@@ -52,7 +53,7 @@ public class LotCategoryController {
         -d "{\"name\": \"test\", \"parent\": null }"
     */
     @PutMapping("/lotcategories/{id}")
-    LotCategory replaceLotCategory(@RequestBody LotCategory newLotCategory, @PathVariable Long id) {
+    LotCategory replaceLotCategory(@RequestBody LotCategory newLotCategory, @PathVariable UUID id) {
         return repository.findById(id)
                 .map(lotCategory -> {
                     lotCategory.setName(newLotCategory.getName());
@@ -69,7 +70,7 @@ public class LotCategoryController {
         curl -i -X DELETE localhost:8080/lotcategories/2
     */
     @DeleteMapping("/lotcategories/{id}")
-    ResponseEntity<String> deleteLotCategory(@PathVariable Long id) {
+    ResponseEntity<String> deleteLotCategory(@PathVariable UUID id) {
         if (!repository.existsById(id)) {
             throw new LotCategoryNotFoundException(id);
         }

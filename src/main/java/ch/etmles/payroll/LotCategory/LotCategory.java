@@ -2,11 +2,13 @@ package ch.etmles.payroll.LotCategory;
 
 import jakarta.persistence.*;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 public class LotCategory {
     private @Id
-    @GeneratedValue Long id;
+    @GeneratedValue
+    UUID id;
 
     @Column(unique=true)
     private String name;
@@ -22,11 +24,11 @@ public class LotCategory {
         this.setParent(parent);
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 

@@ -2,19 +2,18 @@ package ch.etmles.payroll.Lot;
 
 import ch.etmles.payroll.LotCategory.LotCategory;
 import ch.etmles.payroll.Tag.Tag;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+import java.util.UUID;
 
 @Entity
 public class Lot {
 
     private @Id
-    @GeneratedValue Long id;
+    @GeneratedValue UUID id;
     private String name;
     private String description;
     private String pictureUrl;
@@ -52,11 +51,11 @@ public class Lot {
         this.setTags(tags);
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

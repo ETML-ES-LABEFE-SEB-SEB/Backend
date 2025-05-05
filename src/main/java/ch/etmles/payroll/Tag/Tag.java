@@ -5,16 +5,13 @@ import ch.etmles.payroll.LotCategory.LotCategory;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Tag {
     @Id
     @GeneratedValue
-    private Long id;
+    private UUID id;
 
     @Column(unique = true)
     private String label;
@@ -45,11 +42,11 @@ public class Tag {
         this.label = label;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
