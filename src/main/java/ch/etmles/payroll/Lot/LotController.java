@@ -1,6 +1,9 @@
 package ch.etmles.payroll.Lot;
 
 import org.apache.coyote.Response;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +25,12 @@ public class LotController {
     curl -i localhost:8080/lots
     */
     @GetMapping("/lots")
-    List<Lot> all() {
-        return repository.findAll();
+    public Page<Lot> getLots(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
+        return repository.findAll(PageRequest.of(page, size, Sort.by(sortBy)));
     }
 
     /* curl sample :
