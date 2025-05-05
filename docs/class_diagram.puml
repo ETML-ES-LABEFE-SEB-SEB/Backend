@@ -11,6 +11,13 @@ class Lot {
     decimal currentPrice
     LotCategory category
     LotStatus status
+    List<Tag> tags
+}
+
+class Tag {
+    long id
+    string name
+    List<Lot> lots
 }
 
 class LotCategory {
@@ -27,5 +34,6 @@ enum LotStatus {
 
 Lot - LotCategory
 Lot - LotStatus
+Lot - Tag
 
 @enduml
