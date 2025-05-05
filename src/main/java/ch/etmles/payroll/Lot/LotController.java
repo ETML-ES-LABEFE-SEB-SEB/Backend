@@ -63,6 +63,7 @@ public class LotController {
                     lot.setEndDate(newLot.getEndDate());
                     lot.setCategory(newLot.getCategory());
                     lot.setStatus(newLot.getStatus());
+                    lot.setTags(newLot.getTags());
                     return repository.save(lot);
                 })
                 .orElseGet(() -> {

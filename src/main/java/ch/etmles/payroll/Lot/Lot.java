@@ -1,12 +1,14 @@
 package ch.etmles.payroll.Lot;
 
 import ch.etmles.payroll.LotCategory.LotCategory;
+import ch.etmles.payroll.Tag.Tag;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Lot {
@@ -27,9 +29,17 @@ public class Lot {
 
     private LotStatus status;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "lot_tag",
+        joinColumns = @JoinColumn(name = "lot_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<Tag> tags;
+
     public Lot(){}
 
-    public Lot(String name, String description, String pictureUrl, BigDecimal startPrice, String startDate, String endDate, LotCategory category, LotStatus status) {
+    public Lot(String name, String description, String pictureUrl, BigDecimal startPrice, String startDate, String endDate, LotCategory category, LotStatus status, List<Tag> tags) {
         this.setName(name);
         this.setDescription(description);
         this.setPictureUrl(pictureUrl);
@@ -39,6 +49,7 @@ public class Lot {
         this.setEndDate(LocalDateTime.parse(endDate));
         this.setCategory(category);
         this.setStatus(status);
+        this.setTags(tags);
     }
 
     public Long getId() {
@@ -121,6 +132,14 @@ public class Lot {
         this.status = status;
     }
 
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
     @Override
     public boolean equals(Object o){
         if(this == o)
@@ -130,7 +149,11 @@ public class Lot {
         return Objects.equals(this.id, lot.id)
                 && Objects.equals(this.name, lot.name)
                 && Objects.equals(this.description, lot.description)
-                && Objects.equals(this.currentPrice, lot.currentPrice);
+                && Objects.equals(this.currentPrice, lot.currentPrice)
+                && Objects.equals(this.startDate, lot.startDate)
+                && Objects.equals(this.endDate, lot.endDate)
+                && Objects.equals(this.startPrice, lot.startPrice)
+                && Objects.equals(this.tags, lot.tags);
     }
 
     @Override
