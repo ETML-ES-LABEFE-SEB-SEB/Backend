@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-public class LotCategory {
+public class Category {
     private @Id
     @GeneratedValue
     UUID id;
@@ -14,12 +14,12 @@ public class LotCategory {
     private String name;
 
     @OneToOne
-    @JoinColumn(name="lotId")
-    private LotCategory parent;
+    @JoinColumn(name="lot_Id")
+    private Category parent;
 
-    public LotCategory() { }
+    public Category() { }
 
-    public LotCategory(String name, LotCategory parent) {
+    public Category(String name, Category parent) {
         this.setName(name);
         this.setParent(parent);
     }
@@ -40,11 +40,11 @@ public class LotCategory {
         this.name = name;
     }
 
-    public LotCategory getParent() {
+    public Category getParent() {
         return parent;
     }
 
-    public void setParent(LotCategory parent) {
+    public void setParent(Category parent) {
         this.parent = parent;
     }
 
@@ -52,7 +52,7 @@ public class LotCategory {
     public boolean equals(Object o){
         if(this == o)
             return true;
-        if(!(o instanceof LotCategory lot))
+        if(!(o instanceof Category lot))
             return false;
         return Objects.equals(this.id, lot.id)
                 && Objects.equals(this.name, lot.name)
@@ -66,7 +66,7 @@ public class LotCategory {
 
     @Override
     public String toString(){
-        return "LotCategory{" + "id=" + this.getId()
+        return "Category{" + "id=" + this.getId()
                 + ",name='" + this.getName() + '\'' +
                 ",parent='" + this.getParent() + '\'' + '}';
     }

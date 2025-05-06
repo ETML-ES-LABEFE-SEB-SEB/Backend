@@ -3,8 +3,8 @@ package ch.etmles.payroll;
 import ch.etmles.payroll.Lot.Lot;
 import ch.etmles.payroll.Lot.LotRepository;
 import ch.etmles.payroll.Lot.LotStatus;
-import ch.etmles.payroll.LotCategory.LotCategory;
-import ch.etmles.payroll.LotCategory.LotCategoryRepository;
+import ch.etmles.payroll.LotCategory.Category;
+import ch.etmles.payroll.LotCategory.CategoryRepository;
 import ch.etmles.payroll.Tag.Tag;
 import ch.etmles.payroll.Tag.TagRepository;
 import org.slf4j.Logger;
@@ -22,9 +22,9 @@ public class LoadDatabase {
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
     @Bean
-    CommandLineRunner initDatabase(LotRepository lotRepository, LotCategoryRepository categoryRepository, TagRepository tagRepository){
-        LotCategory parentCategory = new LotCategory("Musique", null);
-        LotCategory childCategory = new LotCategory("Guitare", parentCategory);
+    CommandLineRunner initDatabase(LotRepository lotRepository, CategoryRepository categoryRepository, TagRepository tagRepository){
+        Category parentCategory = new Category("Musique", null);
+        Category childCategory = new Category("Guitare", parentCategory);
         Tag fenderTag = new Tag("Fender");
         List<Tag> tags = new ArrayList<>();
         tags.add(fenderTag);

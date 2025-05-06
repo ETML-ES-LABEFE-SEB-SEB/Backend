@@ -1,6 +1,6 @@
 package ch.etmles.payroll.Lot;
 
-import ch.etmles.payroll.LotCategory.LotCategory;
+import ch.etmles.payroll.LotCategory.Category;
 import ch.etmles.payroll.Tag.Tag;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
@@ -23,8 +23,8 @@ public class Lot {
     private BigDecimal currentPrice;
 
     @ManyToOne
-    @JoinColumn(name="lotCategoryId")
-    private LotCategory category;
+    @JoinColumn(name="category_Id")
+    private Category category;
 
     private LotStatus status;
 
@@ -38,7 +38,7 @@ public class Lot {
 
     public Lot(){}
 
-    public Lot(String name, String description, String pictureUrl, BigDecimal startPrice, String startDate, String endDate, LotCategory category, LotStatus status, List<Tag> tags) {
+    public Lot(String name, String description, String pictureUrl, BigDecimal startPrice, String startDate, String endDate, Category category, LotStatus status, List<Tag> tags) {
         this.setName(name);
         this.setDescription(description);
         this.setPictureUrl(pictureUrl);
@@ -115,11 +115,11 @@ public class Lot {
         this.currentPrice = currentPrice;
     }
 
-    public LotCategory getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(LotCategory category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

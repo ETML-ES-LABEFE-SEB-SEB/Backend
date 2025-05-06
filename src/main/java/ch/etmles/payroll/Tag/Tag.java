@@ -1,7 +1,6 @@
 package ch.etmles.payroll.Tag;
 
 import ch.etmles.payroll.Lot.Lot;
-import ch.etmles.payroll.LotCategory.LotCategory;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 

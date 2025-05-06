@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class LotCategoryNotFoundAdvice {
+public class CategoryNotFoundAdvice {
 
     @ResponseBody
-    @ExceptionHandler(LotCategoryNotFoundException.class)
+    @ExceptionHandler(CategoryNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String lotCategoryNotFoundHandler(LotCategoryNotFoundException ex) { return ex.getMessage(); }
+    String lotCategoryNotFoundHandler(CategoryNotFoundException ex) { return ex.getMessage(); }
 }

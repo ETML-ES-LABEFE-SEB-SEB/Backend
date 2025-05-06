@@ -1,6 +1,6 @@
 package ch.etmles.payroll.LotCategory;
 
-public class LotCategoryDTO {
+public class CategoryDTO {
     private String name;
     private String parent;
 
@@ -20,10 +20,10 @@ public class LotCategoryDTO {
         this.name = name;
     }
 
-    public LotCategoryDTO toDTO(LotCategory lotCategory) {
-        LotCategoryDTO dto = new LotCategoryDTO();
-        dto.setName(lotCategory.getName());
-        dto.setParent(lotCategory.getParent() == null ? "" : lotCategory.getParent().getName());
+    public CategoryDTO toDTO(Category category) {
+        CategoryDTO dto = new CategoryDTO();
+        dto.setName(category.getName());
+        dto.setParent(category.getParent() == null ? "" : category.getParent().getName());
         return dto;
     }
 }

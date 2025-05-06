@@ -9,7 +9,7 @@ class Lot {
     datetime endDate
     decimal startPrice
     decimal currentPrice
-    LotCategory category
+    Category category
     LotStatus status
     List<Tag> tags
 }
@@ -20,10 +20,10 @@ class Tag {
     List<Lot> lots
 }
 
-class LotCategory {
+class Category {
     long id
     string name
-    LotCategory? parent
+    Category? parent
 }
 
 enum LotStatus {
@@ -32,7 +32,7 @@ enum LotStatus {
     DELETED
 }
 
-Lot - LotCategory
+Lot - Category
 Lot - Tag
 Lot - LotStatus
 
