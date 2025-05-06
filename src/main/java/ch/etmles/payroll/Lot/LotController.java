@@ -27,11 +27,9 @@ public class LotController {
     */
     @GetMapping("/lots")
     public Page<Lot> getLots(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy
+            @RequestParam(defaultValue = "0") int page
     ) {
-        return repository.findAll(PageRequest.of(page, size, Sort.by(sortBy)));
+        return repository.findAll(PageRequest.of(page, 12, Sort.by("id")));
     }
 
     /* curl sample :
