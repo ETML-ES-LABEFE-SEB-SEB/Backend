@@ -27,9 +27,10 @@ public class LotController {
     */
     @GetMapping("/lots")
     public Page<Lot> getLots(
-            @RequestParam(defaultValue = "0") int page
+            @RequestParam(defaultValue = "1") int page
     ) {
-        return repository.findAll(PageRequest.of(page, 12, Sort.by("id")));
+        if(page < 1) page = 1;
+        return repository.findAll(PageRequest.of(page-1, 12, Sort.by("id")));
     }
 
     /* curl sample :
