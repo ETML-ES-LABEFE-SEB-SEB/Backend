@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/categories")
 public class CategoryController {
 
     private final CategoryRepository repository;
@@ -19,7 +20,7 @@ public class CategoryController {
     /* curl sample :
     curl -i localhost:8080/categories
     */
-    @GetMapping("/categories")
+    @GetMapping("")
     List<Category> all() {
         return repository.findAll();
     }
@@ -27,7 +28,7 @@ public class CategoryController {
     /* curl sample :
     curl -i localhost:8080/categories/1
     */
-    @GetMapping("/categories/{id}")
+    @GetMapping("{id}")
     Category one(@PathVariable UUID id) {
         return repository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException(id));
@@ -38,7 +39,7 @@ public class CategoryController {
         -H "Content-type:application/json" ^
         -d "{\"name\": \"test\", \"parent\": null }"
     */
-    @PostMapping("/categories")
+    @PostMapping("")
     ResponseEntity<Category> newLotCategory(@RequestBody Category category) {
         category.setId(null);
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(category));
@@ -49,7 +50,7 @@ public class CategoryController {
         -H "Content-type:application/json" ^
         -d "{\"name\": \"test\", \"parent\": null }"
     */
-    @PutMapping("/categories/{id}")
+    @PutMapping("{id}")
     Category replaceLotCategory(@RequestBody Category newCategory, @PathVariable UUID id) {
         return repository.findById(id)
                 .map(lotCategory -> {
@@ -66,7 +67,7 @@ public class CategoryController {
     /* curl sample :
         curl -i -X DELETE localhost:8080/categories/2
     */
-    @DeleteMapping("/categories/{id}")
+    @DeleteMapping("{id}")
     ResponseEntity<String> deleteLotCategory(@PathVariable UUID id) {
         if (!repository.existsById(id)) {
             throw new CategoryNotFoundException(id);
