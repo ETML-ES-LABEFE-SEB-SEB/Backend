@@ -30,7 +30,7 @@ public class LotController {
             @RequestParam(defaultValue = "1") int page
     ) {
         if(page < 1) page = 1;
-        return repository.findAll(PageRequest.of(page-1, 12, Sort.by("id")));
+        return repository.findAll(PageRequest.of(page-1, 12, Sort.by(Sort.Direction.ASC,"endDate")));
     }
 
     /* curl sample :
