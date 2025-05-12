@@ -1,5 +1,9 @@
 package ch.etmles.payroll.Lot;
 
+import java.util.UUID;
+
 public class LotNotFoundException extends RuntimeException {
-    public LotNotFoundException(long id) { super("Could not find lot with id " + id); }
+    public LotNotFoundException(UUID id) {
+        super("Could not find lot with id " + id);
+    }
 }

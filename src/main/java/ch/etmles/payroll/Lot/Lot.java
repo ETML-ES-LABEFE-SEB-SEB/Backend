@@ -1,35 +1,61 @@
 package ch.etmles.payroll.Lot;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
+import ch.etmles.payroll.LotCategory.Category;
+import ch.etmles.payroll.Tag.Tag;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 public class Lot {
 
     private @Id
-    @GeneratedValue Long id;
+    @GeneratedValue UUID id;
     private String name;
     private String description;
-    private BigDecimal price;
+    private String pictureUrl;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private BigDecimal startPrice;
+    private BigDecimal currentPrice;
+
+    @ManyToOne
+    @JoinColumn(name="category_Id")
+    private Category category;
+
+    private LotStatus status;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "lot_tag",
+        joinColumns = @JoinColumn(name = "lot_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<Tag> tags;
 
     public Lot(){}
 
-    public Lot(String name, String description, BigDecimal price) {
+    public Lot(String name, String description, String pictureUrl, BigDecimal startPrice, String startDate, String endDate, Category category, LotStatus status, List<Tag> tags) {
         this.setName(name);
         this.setDescription(description);
-        this.setPrice(price);
+        this.setPictureUrl(pictureUrl);
+        this.setStartPrice(startPrice);
+        this.setCurrentPrice(startPrice);
+        this.setStartDate(LocalDateTime.parse(startDate));
+        this.setEndDate(LocalDateTime.parse(endDate));
+        this.setCategory(category);
+        this.setStatus(status);
+        this.setTags(tags);
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -49,12 +75,68 @@ public class Lot {
         this.description = description;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public String getPictureUrl() {
+        return pictureUrl;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public BigDecimal getStartPrice() {
+        return startPrice;
+    }
+
+    public void setStartPrice(BigDecimal startPrice) {
+        this.startPrice = startPrice;
+    }
+
+    public BigDecimal getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public void setCurrentPrice(BigDecimal currentPrice) {
+        this.currentPrice = currentPrice;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public LotStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(LotStatus status) {
+        this.status = status;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     @Override
@@ -66,12 +148,16 @@ public class Lot {
         return Objects.equals(this.id, lot.id)
                 && Objects.equals(this.name, lot.name)
                 && Objects.equals(this.description, lot.description)
-                && Objects.equals(this.price, lot.price);
+                && Objects.equals(this.currentPrice, lot.currentPrice)
+                && Objects.equals(this.startDate, lot.startDate)
+                && Objects.equals(this.endDate, lot.endDate)
+                && Objects.equals(this.startPrice, lot.startPrice)
+                && Objects.equals(this.tags, lot.tags);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(this.id, this.name, this.description, this.price);
+        return Objects.hash(this.id, this.name, this.description, this.currentPrice);
     }
 
     @Override
@@ -79,6 +165,6 @@ public class Lot {
         return "Lot{" + "id=" + this.getId()
                 + ",name='" + this.getName() + '\'' +
                 ",description='" + this.getDescription() + '\'' +
-                ",price=" + this.getPrice() + "CHF " + '}';
+                ",price=" + this.getCurrentPrice() + "CHF " + '}';
     }
 }
