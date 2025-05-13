@@ -1,29 +1,43 @@
 @startuml
 
 class Lot {
-    long id
+    Guid id
     string name
     string description
     string pictureUrl
     datetime startDate
     datetime endDate
     decimal startPrice
-    decimal currentPrice
     Category category
     LotStatus status
     List<Tag> tags
 }
 
 class Tag {
-    long id
+    Guid id
     string name
     List<Lot> lots
 }
 
 class Category {
-    long id
+    Guid id
     string name
     Category? parent
+}
+
+class Bid {
+    Guid id
+    decimal bidValue
+    datetime bidDate
+    Lot bidUpLot
+}
+
+class Member {
+    Guid id
+    string username
+    decimal availableWallet
+    decimal reservedWallet
+    List<Bid> bids
 }
 
 enum LotStatus {
@@ -32,8 +46,10 @@ enum LotStatus {
     DELETED
 }
 
-Lot - Category
 Lot - Tag
+Lot - Category
+Bid - Lot
+Bid - Member
 Lot - LotStatus
 
 @enduml
