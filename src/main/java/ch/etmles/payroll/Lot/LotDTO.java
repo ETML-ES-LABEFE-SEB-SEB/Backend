@@ -112,7 +112,7 @@ public class LotDTO {
         this.id = id;
     }
 
-    public LotDTO toDto(Lot lot) {
+    public static LotDTO toDto(Lot lot) {
         LotDTO dto = new LotDTO();
         dto.setId(lot.getId());
         dto.setName(lot.getName());

@@ -20,7 +20,7 @@ public class CategoryDTO {
         this.name = name;
     }
 
-    public CategoryDTO toDTO(Category category) {
+    public static CategoryDTO toDTO(Category category) {
         CategoryDTO dto = new CategoryDTO();
         dto.setName(category.getName());
         dto.setParent(category.getParent() == null ? "" : category.getParent().getName());

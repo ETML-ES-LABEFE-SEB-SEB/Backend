@@ -5,6 +5,8 @@ import ch.etmles.payroll.Lot.LotRepository;
 import ch.etmles.payroll.Lot.LotStatus;
 import ch.etmles.payroll.LotCategory.Category;
 import ch.etmles.payroll.LotCategory.CategoryRepository;
+import ch.etmles.payroll.Member.Member;
+import ch.etmles.payroll.Member.MemberRepository;
 import ch.etmles.payroll.Tag.Tag;
 import ch.etmles.payroll.Tag.TagRepository;
 import org.slf4j.Logger;
@@ -22,7 +24,7 @@ public class LoadDatabase {
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
     @Bean
-    CommandLineRunner initDatabase(LotRepository lotRepository, CategoryRepository categoryRepository, TagRepository tagRepository){
+    CommandLineRunner initDatabase(LotRepository lotRepository, CategoryRepository categoryRepository, TagRepository tagRepository, MemberRepository memberRepository){
         Category parentCategory = new Category("Musique", null);
         Category childCategory = new Category("Guitare", parentCategory);
         Category carCategory = new Category("Voiture", null);
@@ -39,6 +41,8 @@ public class LoadDatabase {
         photoTags.add(rareTag);
         List<Tag> gamingTags = new ArrayList<>();
         gamingTags.add(consoleTag);
+        Member memberNo1 = new Member("tartempion", new BigDecimal("15000"), new BigDecimal("0"));
+        Member memberNo2 = new Member("toutankhamon", new BigDecimal("250.45"), new BigDecimal("0"));
         return args->{
             log.info("Preloading " + tagRepository.save(rareTag));
             log.info("Preloading " + tagRepository.save(gibsonTag));
@@ -50,6 +54,8 @@ public class LoadDatabase {
             log.info("Preloading " + categoryRepository.save(reflexCategory));
             log.info("Preloading " + categoryRepository.save(gamingCategory));
             log.info("Preloading " + categoryRepository.save(controllerCategory));
+            log.info("Preloading " + memberRepository.save(memberNo1));
+            log.info("Preloading " + memberRepository.save(memberNo2));
             log.info("Preloading " + lotRepository.save(new Lot("Voiture de collection", "Vend voiture de collection américaine retro en très bon état.", "https://picsum.photos/id/111/600/400", new BigDecimal("48000"), LocalDateTime.now().minusDays(5).toString(), (LocalDateTime.now()).minusDays(2).toString(), carCategory, LotStatus.ACTIVATED,photoTags)));
             log.info("Preloading " + lotRepository.save(new Lot("Guitare", "Guitare Gibson, très bon état. Produite en 1978 aux USA.", "https://picsum.photos/id/145/600/400", new BigDecimal("399.95"), LocalDateTime.now().minusDays(3).toString(), (LocalDateTime.now()).plusDays(5).toString(), childCategory, LotStatus.ACTIVATED,guitareTags)));
             log.info("Preloading " + lotRepository.save(new Lot("Appareil photo", "Bon appareil photo argentique, objectif en bon état. Très bien pour un rendu classique.", "https://picsum.photos/id/250/600/400", new BigDecimal("650"), LocalDateTime.now().toString(), (LocalDateTime.now()).plusDays(7).toString(), reflexCategory, LotStatus.ACTIVATED, photoTags)));

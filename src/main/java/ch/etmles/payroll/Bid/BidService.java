@@ -39,7 +39,7 @@ public class BidService {
         List<Bid> bids = bidRepository.findByBidUpLot(lot);
         List<BidDTO> bidDTOs = new ArrayList<BidDTO>();
         for(Bid bid : bids)
-            bidDTOs.add(new BidDTO().toDto(bid));
+            bidDTOs.add(BidDTO.toDto(bid));
         return bidDTOs;
     }
 

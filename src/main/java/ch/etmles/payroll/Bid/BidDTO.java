@@ -23,7 +23,7 @@ public class BidDTO {
         this.bidDate = bidDate;
     }
 
-    public BidDTO toDto(Bid bid) {
+    public static BidDTO toDto(Bid bid) {
         BidDTO dto = new BidDTO();
         dto.setBidValue(bid.getBidValue());
         dto.setBidDate(bid.getBidDate());

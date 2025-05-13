@@ -1,6 +1,7 @@
 package ch.etmles.payroll.Bid;
 
 import ch.etmles.payroll.Lot.Lot;
+import ch.etmles.payroll.Member.Member;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -18,12 +19,17 @@ public class Bid {
     @JoinColumn(name="lot_Id")
     private Lot bidUpLot;
 
+    @OneToOne
+    @JoinColumn(name="member_Id")
+    private Member member;
+
     public Bid() {}
 
-    public Bid(BigDecimal bidValue, LocalDateTime bidDate, Lot bidUpLot) {
+    public Bid(BigDecimal bidValue, LocalDateTime bidDate, Lot bidUpLot, Member member) {
         this.setBidValue(bidValue);
         this.setBidDate(bidDate);
         this.setBidUpLot(bidUpLot);
+        this.setMember(member);
     }
 
     public Lot getBidUpLot() {
@@ -56,5 +62,13 @@ public class Bid {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
     }
 }
