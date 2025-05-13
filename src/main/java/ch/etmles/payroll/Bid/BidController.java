@@ -30,8 +30,11 @@ public class BidController {
                 .orElseThrow(() -> new LotNotFoundException(id));
     }
 
+    /* curl sample :
+    curl -i localhost:8080/lots/UUID
+     */
     @GetMapping("lots/{lotId}")
-    List<Bid> lotsBids(@PathVariable UUID lotId) {
+    List<BidDTO> getBidsForLot(@PathVariable UUID lotId) {
         return service.getBidsForLot(lotId);
     }
 
@@ -41,9 +44,38 @@ public class BidController {
         -d "{\"bidValue\": \"29.95\", \"bidDate\": \"12.05.2025\" }"
     */
     @PostMapping("lots/{lotId}")
-    ResponseEntity<Bid> newLot(@PathVariable UUID lotId,@RequestBody Bid bid) {
+    ResponseEntity<Bid> newBidForLot(@PathVariable UUID lotId,@RequestBody BidDTO bid) {
         Lot lotToBidOn = service.getOpenLotById(lotId);
-        bid.setBidUpLot(lotToBidOn);
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(bid));
+        Bid newBid = new Bid();
+        newBid.setBidUpLot(lotToBidOn);
+        newBid.setBidDate(bid.getBidDate());
+        newBid.setBidValue(bid.getBidValue());
+        if(service.checkBidValidity(newBid))
+            return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(newBid));
+        throw new BidTooLowException(lotToBidOn.getId());
+    }
+
+    @PutMapping("{id}")
+    Bid replaceBid(@PathVariable UUID id, @RequestBody Bid newBid) {
+        return repository.findById(id)
+                .map(bid -> {
+                    bid.setBidUpLot(newBid.getBidUpLot());
+                    bid.setBidDate(newBid.getBidDate());
+                    bid.setBidValue(newBid.getBidValue());
+                    return repository.save(bid);
+                })
+                .orElseGet(() -> {
+                    newBid.setId(id);
+                    return repository.save(newBid);
+                });
+    }
+
+    @DeleteMapping("{id}")
+    ResponseEntity<String> deleteBid(@PathVariable UUID id) {
+        if(!repository.existsById(id)) {
+            throw new LotNotFoundException(id);
+        }
+        repository.deleteById(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Bid deleted");
     }
 }
