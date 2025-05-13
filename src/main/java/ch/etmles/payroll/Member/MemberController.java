@@ -2,10 +2,6 @@ package ch.etmles.payroll.Member;
 
 import ch.etmles.payroll.Bid.Bid;
 import ch.etmles.payroll.Bid.BidDTO;
-import ch.etmles.payroll.Lot.Lot;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;

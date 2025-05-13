@@ -30,6 +30,7 @@ class Bid {
     decimal bidValue
     datetime bidDate
     Lot bidUpLot
+    Member member
 }
 
 class Member {

@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class BidDTO {
+
+    private String username;
     private BigDecimal bidValue;
     private LocalDateTime bidDate;
 
@@ -23,8 +25,17 @@ public class BidDTO {
         this.bidDate = bidDate;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public static BidDTO toDto(Bid bid) {
         BidDTO dto = new BidDTO();
+        dto.setUsername(bid.getMember().getUsername());
         dto.setBidValue(bid.getBidValue());
         dto.setBidDate(bid.getBidDate());
         return dto;

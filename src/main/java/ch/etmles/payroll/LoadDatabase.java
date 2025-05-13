@@ -1,5 +1,7 @@
 package ch.etmles.payroll;
 
+import ch.etmles.payroll.Bid.Bid;
+import ch.etmles.payroll.Bid.BidRepository;
 import ch.etmles.payroll.Lot.Lot;
 import ch.etmles.payroll.Lot.LotRepository;
 import ch.etmles.payroll.Lot.LotStatus;
@@ -24,7 +26,7 @@ public class LoadDatabase {
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
     @Bean
-    CommandLineRunner initDatabase(LotRepository lotRepository, CategoryRepository categoryRepository, TagRepository tagRepository, MemberRepository memberRepository){
+    CommandLineRunner initDatabase(LotRepository lotRepository, CategoryRepository categoryRepository, TagRepository tagRepository, MemberRepository memberRepository, BidRepository bidRepository){
         Category parentCategory = new Category("Musique", null);
         Category childCategory = new Category("Guitare", parentCategory);
         Category carCategory = new Category("Voiture", null);
@@ -42,7 +44,10 @@ public class LoadDatabase {
         List<Tag> gamingTags = new ArrayList<>();
         gamingTags.add(consoleTag);
         Member memberNo1 = new Member("tartempion", new BigDecimal("15000"), new BigDecimal("0"));
-        Member memberNo2 = new Member("toutankhamon", new BigDecimal("250.45"), new BigDecimal("0"));
+        Member memberNo2 = new Member("toutankhamon", new BigDecimal("250.45"), new BigDecimal("650"));
+        Lot photoCamWithBids = new Lot("Appareil photo avec une enchère", "Bon appareil photo argentique, objectif en bon état. Très bien pour un rendu classique.", "https://picsum.photos/id/250/600/400", new BigDecimal("650"), LocalDateTime.now().toString(), (LocalDateTime.now()).plusDays(7).toString(), reflexCategory, LotStatus.ACTIVATED, photoTags);
+        Bid bid1 = new Bid(new BigDecimal("650"), LocalDateTime.now(), photoCamWithBids, memberNo1);
+
         return args->{
             log.info("Preloading " + tagRepository.save(rareTag));
             log.info("Preloading " + tagRepository.save(gibsonTag));
@@ -58,7 +63,7 @@ public class LoadDatabase {
             log.info("Preloading " + memberRepository.save(memberNo2));
             log.info("Preloading " + lotRepository.save(new Lot("Voiture de collection", "Vend voiture de collection américaine retro en très bon état.", "https://picsum.photos/id/111/600/400", new BigDecimal("48000"), LocalDateTime.now().minusDays(5).toString(), (LocalDateTime.now()).minusDays(2).toString(), carCategory, LotStatus.ACTIVATED,photoTags)));
             log.info("Preloading " + lotRepository.save(new Lot("Guitare", "Guitare Gibson, très bon état. Produite en 1978 aux USA.", "https://picsum.photos/id/145/600/400", new BigDecimal("399.95"), LocalDateTime.now().minusDays(3).toString(), (LocalDateTime.now()).plusDays(5).toString(), childCategory, LotStatus.ACTIVATED,guitareTags)));
-            log.info("Preloading " + lotRepository.save(new Lot("Appareil photo", "Bon appareil photo argentique, objectif en bon état. Très bien pour un rendu classique.", "https://picsum.photos/id/250/600/400", new BigDecimal("650"), LocalDateTime.now().toString(), (LocalDateTime.now()).plusDays(7).toString(), reflexCategory, LotStatus.ACTIVATED, photoTags)));
+            log.info("Preloading " + lotRepository.save(photoCamWithBids));
             log.info("Preloading " + lotRepository.save(new Lot("Controlleur PS3", "Controlleur pour la console PS3 en bon état, couleur noir.", "https://picsum.photos/id/96/600/400", new BigDecimal("45"), LocalDateTime.now().minusDays(5).toString(), (LocalDateTime.now()).plusHours(8).toString(), controllerCategory, LotStatus.ACTIVATED, gamingTags)));
             log.info("Preloading " + lotRepository.save(new Lot("Voiture de collection", "Vend voiture de collection américaine retro en très bon état.", "https://picsum.photos/id/111/600/400", new BigDecimal("48000"), LocalDateTime.now().minusDays(5).toString(), (LocalDateTime.now()).plusDays(2).toString(), carCategory, LotStatus.ACTIVATED,photoTags)));
             log.info("Preloading " + lotRepository.save(new Lot("Guitare", "Guitare Gibson, très bon état. Produite en 1978 aux USA.", "https://picsum.photos/id/145/600/400", new BigDecimal("399.95"), LocalDateTime.now().minusDays(3).toString(), (LocalDateTime.now()).plusDays(5).toString(), childCategory, LotStatus.ACTIVATED,guitareTags)));
@@ -84,7 +89,7 @@ public class LoadDatabase {
             log.info("Preloading " + lotRepository.save(new Lot("Guitare", "Guitare Gibson, très bon état. Produite en 1978 aux USA.", "https://picsum.photos/id/145/600/400", new BigDecimal("399.95"), LocalDateTime.now().minusDays(3).toString(), (LocalDateTime.now()).plusDays(5).toString(), childCategory, LotStatus.ACTIVATED,guitareTags)));
             log.info("Preloading " + lotRepository.save(new Lot("Appareil photo", "Bon appareil photo argentique, objectif en bon état. Très bien pour un rendu classique.", "https://picsum.photos/id/250/600/400", new BigDecimal("650"), LocalDateTime.now().toString(), (LocalDateTime.now()).plusDays(7).toString(), reflexCategory, LotStatus.ACTIVATED, photoTags)));
             log.info("Preloading " + lotRepository.save(new Lot("Controlleur PS3", "Controlleur pour la console PS3 en bon état, couleur noir.", "https://picsum.photos/id/96/600/400", new BigDecimal("45"), LocalDateTime.now().minusDays(5).toString(), (LocalDateTime.now()).plusHours(8).toString(), controllerCategory, LotStatus.ACTIVATED, gamingTags)));
-
+            log.info("Preloading " + bidRepository.save(bid1));
             log.info("Swagger : http://localhost:8080/swagger-ui/index.html");
         };
     }
