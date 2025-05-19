@@ -2,6 +2,7 @@ package ch.etmles.payroll.Bid;
 
 import ch.etmles.payroll.Lot.Lot;
 import ch.etmles.payroll.Member.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ public class Bid {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
+    @JsonIgnore
     private Member member;
 
     public Bid() {}

@@ -23,18 +23,21 @@ public class BidService {
         this.memberRepository = memberRepository;
     }
 
-    @Transactional
     public boolean checkBidValidity(Bid bid)
     {
         List<Bid> lotBids = bidRepository.findByBidUpLot(bid.getBidUpLot());
         lotBids.sort((b1, b2) -> b1.getBidValue().compareTo(b2.getBidValue()));
-        Bid highest = lotBids.getLast();
 
-        // newBid is higher than the current one, VALID !
-        if(highest.getBidValue().compareTo(bid.getBidValue()) < 0)
-            return true;
+        if(!lotBids.isEmpty()){
+            Bid highest = lotBids.getLast();
 
-        return false;
+            // newBid is higher than the current one, VALID !
+            if(highest.getBidValue().compareTo(bid.getBidValue()) < 0)
+                return true;
+            else
+                return false;
+        }
+        return true;
     }
 
     @Transactional

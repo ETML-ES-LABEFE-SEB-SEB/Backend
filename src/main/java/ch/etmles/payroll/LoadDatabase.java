@@ -47,7 +47,7 @@ public class LoadDatabase {
         Member memberNo1 = new Member("Tartempion", "https://picsum.photos/id/103/200", new BigDecimal("15000"), new BigDecimal("0"), new ArrayList<>());
         Member memberNo2 = new Member("Toutankhamon", "https://picsum.photos/id/64/200", new BigDecimal("250.45"), new BigDecimal("650"), new ArrayList<>());
         Bid bid1 = new Bid(new BigDecimal("650"), LocalDateTime.now().minusDays(1), photoCamWithBids, memberNo1);
-        Bid bid2 = new Bid(new BigDecimal("655"), LocalDateTime.now(), photoCamWithBids, memberNo1);
+//        Bid bid2 = new Bid(new BigDecimal("655"), LocalDateTime.now(), photoCamWithBids, memberNo1);
 
         return args->{
             log.info("Preloading " + tagRepository.save(rareTag));
@@ -63,9 +63,7 @@ public class LoadDatabase {
             log.info("Preloading " + lotRepository.save(photoCamWithBids));
             log.info("Preloading " + memberRepository.save(memberNo1));
             log.info("Preloading " + memberRepository.save(memberNo2));
-//            log.info("Preloading" + bidRepository.save(bid1));
-//            log.info("Preloading" + bidRepository.save(bid2));
-
+//            log.info("Preloading " + bidRepository.save(bid1));
 
             for(int i = 0; i < 10; ++i) {
                 log.info("Preloading " + lotRepository.save(new Lot("Voiture de collection", "Vend voiture de collection américaine retro en très bon état.", "https://picsum.photos/id/111/600/400", new BigDecimal("48000"), LocalDateTime.now().minusDays(5).toString(), (LocalDateTime.now()).minusDays(2).toString(), carCategory, LotStatus.ACTIVATED,photoTags)));

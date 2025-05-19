@@ -3,10 +3,12 @@ package ch.etmles.payroll.Bid;
 import ch.etmles.payroll.Lot.Lot;
 import ch.etmles.payroll.Lot.LotNotFoundException;
 import ch.etmles.payroll.Lot.LotService;
+import ch.etmles.payroll.Member.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,11 +19,13 @@ public class BidController {
     private final BidRepository repository;
     private final BidService bidService;
     private final LotService lotService;
+    private final MemberService memberService;
 
-    public BidController(BidRepository bidRepository, BidService bidService, LotService lotService) {
+    public BidController(BidRepository bidRepository, BidService bidService, LotService lotService, MemberService memberService) {
         this.repository = bidRepository;
         this.bidService = bidService;
         this.lotService = lotService;
+        this.memberService = memberService;
     }
 
     /* curl sample :
@@ -53,15 +57,18 @@ public class BidController {
         -d "{\"bidValue\": \"29.95\", \"bidDate\": \"12.05.2025\" }"
     */
     @PostMapping("lots/{lotId}")
-    ResponseEntity<Bid> newBidForLot(@PathVariable UUID lotId,@RequestBody BidDTO bid) {
+    ResponseEntity<Bid> newBidForLot(@PathVariable UUID lotId,@RequestBody BigDecimal bidValue) {
         Lot lotToBidOn = lotService.getOpenLotById(lotId);
         Bid newBid = new Bid();
         newBid.setBidUpLot(lotToBidOn);
-        newBid.setBidDate(bid.getBidDate());
-        newBid.setBidValue(bid.getBidValue());
-        if(bidService.checkBidValidity(newBid))
-            return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(newBid));
-        throw new BidTooLowException(lotToBidOn.getId());
+        newBid.setMember(memberService.getCurrentMember());
+        newBid.setBidValue(bidValue);
+        if(bidService.checkBidValidity(newBid)) {
+            repository.save(newBid);
+            return new ResponseEntity<>(newBid, HttpStatus.CREATED);
+        } else {
+            throw new BidTooLowException(lotToBidOn.getId());
+        }
     }
 
     @PutMapping("{id}")
