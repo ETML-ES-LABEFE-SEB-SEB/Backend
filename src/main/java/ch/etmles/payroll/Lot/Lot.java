@@ -1,10 +1,14 @@
 package ch.etmles.payroll.Lot;
 
+import ch.etmles.payroll.Bid.Bid;
 import ch.etmles.payroll.LotCategory.Category;
+import ch.etmles.payroll.Member.Member;
 import ch.etmles.payroll.Tag.Tag;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -36,9 +40,16 @@ public class Lot {
     )
     private List<Tag> tags;
 
+    @ManyToOne
+    @JsonIgnore
+    private Member owner;
+
+    @OneToMany(mappedBy = "bidUpLot", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bid> bids = new ArrayList<>();
+
     public Lot(){}
 
-    public Lot(String name, String description, String pictureUrl, BigDecimal startPrice, String startDate, String endDate, Category category, LotStatus status, List<Tag> tags) {
+    public Lot(String name, String description, String pictureUrl, BigDecimal startPrice, String startDate, String endDate, Category category, LotStatus status, List<Tag> tags, Member owner) {
         this.setName(name);
         this.setDescription(description);
         this.setPictureUrl(pictureUrl);
@@ -49,6 +60,7 @@ public class Lot {
         this.setCategory(category);
         this.setStatus(status);
         this.setTags(tags);
+        this.setOwner(owner);
     }
 
     public UUID getId() {
@@ -137,6 +149,22 @@ public class Lot {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public Member getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Member owner) {
+        this.owner = owner;
+    }
+
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
     }
 
     @Override

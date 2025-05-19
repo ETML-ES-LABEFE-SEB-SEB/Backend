@@ -2,6 +2,7 @@ package ch.etmles.payroll.Bid;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class BidDTO {
 
@@ -9,6 +10,8 @@ public class BidDTO {
     private String profilePicture;
     private BigDecimal bidValue;
     private LocalDateTime bidDate;
+
+    private UUID lotId;
 
     public BigDecimal getBidValue() {
         return bidValue;
@@ -42,12 +45,21 @@ public class BidDTO {
         this.profilePicture = profilePicture;
     }
 
+    public UUID getLotId() {
+        return lotId;
+    }
+
+    public void setLotId(UUID lotId) {
+        this.lotId = lotId;
+    }
+
     public static BidDTO toDto(Bid bid) {
         BidDTO dto = new BidDTO();
-        dto.setUsername(bid.getMember().getUsername());
-        dto.setProfilePicture(bid.getMember().getProfilePicture());
+        dto.setUsername(bid.getOwner().getUsername());
+        dto.setProfilePicture(bid.getOwner().getProfilePicture());
         dto.setBidValue(bid.getBidValue());
         dto.setBidDate(bid.getBidDate());
+        dto.setLotId(bid.getBidUpLot().getId());
         return dto;
     }
 }

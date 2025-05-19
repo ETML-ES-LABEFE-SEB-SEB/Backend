@@ -16,22 +16,22 @@ public class Bid {
     private BigDecimal bidValue;
     private LocalDateTime bidDate;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="lot_Id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="lot_id")
     private Lot bidUpLot;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    private Member member;
+    @JoinColumn(name = "member_id")
+    private Member owner;
 
     public Bid() {}
 
-    public Bid(BigDecimal bidValue, LocalDateTime bidDate, Lot bidUpLot, Member member) {
+    public Bid(BigDecimal bidValue, LocalDateTime bidDate, Lot bidUpLot, Member owner) {
         this.setBidValue(bidValue);
         this.setBidDate(bidDate);
         this.setBidUpLot(bidUpLot);
-        this.setMember(member);
+        this.setOwner(owner);
     }
 
     public Lot getBidUpLot() {
@@ -66,11 +66,11 @@ public class Bid {
         this.id = id;
     }
 
-    public Member getMember() {
-        return member;
+    public Member getOwner() {
+        return owner;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setOwner(Member member) {
+        this.owner = member;
     }
 }

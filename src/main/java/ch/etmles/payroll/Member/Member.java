@@ -1,8 +1,8 @@
 package ch.etmles.payroll.Member;
 
 import ch.etmles.payroll.Bid.Bid;
+import ch.etmles.payroll.Lot.Lot;
 import jakarta.persistence.*;
-import org.springframework.context.annotation.Primary;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,8 +21,11 @@ public class Member {
 
     private BigDecimal reservedWallet;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "owner")
     private List<Bid> bids = new ArrayList<>();
+
+    @OneToMany(mappedBy = "owner")
+    private List<Lot> lots = new ArrayList<>();
 
     public Member() {}
 
@@ -84,6 +87,14 @@ public class Member {
 
     public void addBid(Bid bid) {
         this.bids.add(bid);
-        bid.setMember(this);
+        bid.setOwner(this);
+    }
+
+    public List<Lot> getLots() {
+        return lots;
+    }
+
+    public void setLots(List<Lot> lots) {
+        this.lots = lots;
     }
 }

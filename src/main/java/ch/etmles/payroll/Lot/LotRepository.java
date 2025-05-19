@@ -6,4 +6,5 @@ import java.util.UUID;
 
 public interface LotRepository extends JpaRepository<Lot, UUID> {
 
+    Lot findByName(String name);
 }

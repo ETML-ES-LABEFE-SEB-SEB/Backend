@@ -61,7 +61,7 @@ public class BidController {
         Lot lotToBidOn = lotService.getOpenLotById(lotId);
         Bid newBid = new Bid();
         newBid.setBidUpLot(lotToBidOn);
-        newBid.setMember(memberService.getCurrentMember());
+        newBid.setOwner(memberService.getCurrentMember());
         newBid.setBidValue(bidValue);
         if(bidService.checkBidValidity(newBid)) {
             repository.save(newBid);
