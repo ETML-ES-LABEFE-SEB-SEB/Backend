@@ -43,8 +43,8 @@ public class LoadDatabase {
         photoTags.add(rareTag);
         List<Tag> gamingTags = new ArrayList<>();
         gamingTags.add(consoleTag);
-        Member memberNo1 = new Member("tartempion", new BigDecimal("15000"), new BigDecimal("0"));
-        Member memberNo2 = new Member("toutankhamon", new BigDecimal("250.45"), new BigDecimal("650"));
+        Member memberNo1 = new Member("tartempion", "https://picsum.photos/id/103/200", new BigDecimal("15000"), new BigDecimal("0"));
+        Member memberNo2 = new Member("toutankhamon", "https://picsum.photos/id/64/200", new BigDecimal("250.45"), new BigDecimal("650"));
         Lot photoCamWithBids = new Lot("Appareil photo avec une enchère", "Bon appareil photo argentique, objectif en bon état. Très bien pour un rendu classique.", "https://picsum.photos/id/250/600/400", new BigDecimal("650"), LocalDateTime.now().toString(), (LocalDateTime.now()).plusDays(7).toString(), reflexCategory, LotStatus.ACTIVATED, photoTags);
         Bid bid1 = new Bid(new BigDecimal("650"), LocalDateTime.now(), photoCamWithBids, memberNo1);
 

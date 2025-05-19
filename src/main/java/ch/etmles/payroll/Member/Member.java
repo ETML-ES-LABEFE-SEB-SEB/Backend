@@ -18,6 +18,7 @@ public class Member {
     @GeneratedValue UUID id;
 
     private String username;
+    private String profilePicture;
     private BigDecimal availableWallet;
 
     private BigDecimal reservedWallet;
@@ -27,8 +28,9 @@ public class Member {
 
     public Member() {}
 
-    public Member(String username, BigDecimal availableWallet, BigDecimal reservedWallet) {
+    public Member(String username, String profilePicture, BigDecimal availableWallet, BigDecimal reservedWallet) {
         this.setUsername(username);
+        this.setProfilePicture(profilePicture);
         this.setAvailableWallet(availableWallet);
         this.setReservedWallet(reservedWallet);
         this.setBids(bids);
@@ -48,6 +50,14 @@ public class Member {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     public BigDecimal getAvailableWallet() {

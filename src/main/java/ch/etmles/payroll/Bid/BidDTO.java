@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 public class BidDTO {
 
     private String username;
+    private String profilePicture;
     private BigDecimal bidValue;
     private LocalDateTime bidDate;
 
@@ -33,9 +34,18 @@ public class BidDTO {
         this.username = username;
     }
 
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
     public static BidDTO toDto(Bid bid) {
         BidDTO dto = new BidDTO();
         dto.setUsername(bid.getMember().getUsername());
+        dto.setProfilePicture(bid.getMember().getProfilePicture());
         dto.setBidValue(bid.getBidValue());
         dto.setBidDate(bid.getBidDate());
         return dto;
