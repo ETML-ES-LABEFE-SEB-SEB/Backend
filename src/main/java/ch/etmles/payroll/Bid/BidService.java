@@ -1,46 +1,26 @@
 package ch.etmles.payroll.Bid;
 
 import ch.etmles.payroll.Lot.*;
+import ch.etmles.payroll.Member.Member;
+import ch.etmles.payroll.Member.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class BidService {
 
     private final BidRepository bidRepository;
     private final LotRepository lotRepository;
+    private final MemberRepository memberRepository;
 
     @Autowired
-    public BidService(BidRepository bidRepository, LotRepository lotRepository) {
+    public BidService(BidRepository bidRepository, LotRepository lotRepository, MemberRepository memberRepository) {
         this.bidRepository = bidRepository;
         this.lotRepository = lotRepository;
-    }
-
-    public Lot getOpenLotById(UUID lotId)
-    {
-        Lot lot = lotRepository.findById(lotId)
-                .orElseThrow(() -> new LotNotFoundException(lotId));
-
-        if(lot.getStatus() == LotStatus.ACTIVATED)
-            return lot;
-
-        throw new LotNotOpenedException(lotId);
-    }
-
-    public List<BidDTO> getBidsForLot(UUID lotId)
-    {
-        Lot lot = getOpenLotById(lotId);
-        List<Bid> bids = bidRepository.findByBidUpLot(lot);
-        List<BidDTO> bidDTOs = new ArrayList<BidDTO>();
-        for(Bid bid : bids)
-            bidDTOs.add(BidDTO.toDto(bid));
-        return bidDTOs;
+        this.memberRepository = memberRepository;
     }
 
     @Transactional
@@ -55,5 +35,12 @@ public class BidService {
             return true;
 
         return false;
+    }
+
+    @Transactional
+    public Member getBidderFromId(UUID memberId)
+    {
+        Optional<Member> bidder = memberRepository.findById(memberId);
+        return bidder.orElse(null);
     }
 }

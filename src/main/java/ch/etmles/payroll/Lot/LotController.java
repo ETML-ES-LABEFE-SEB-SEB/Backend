@@ -1,5 +1,6 @@
 package ch.etmles.payroll.Lot;
 
+import ch.etmles.payroll.Bid.BidDTO;
 import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,9 +19,11 @@ import java.util.UUID;
 public class LotController {
 
     private final LotRepository repository;
+    private final LotService lotService;
 
-    public LotController(LotRepository repository) {
+    public LotController(LotRepository repository, LotService lotService) {
         this.repository = repository;
+        this.lotService = lotService;
     }
 
     /* curl sample :
@@ -41,6 +44,14 @@ public class LotController {
     Lot one(@PathVariable UUID id) {
         return repository.findById(id)
                 .orElseThrow(() -> new LotNotFoundException(id));
+    }
+
+    /* curl sample :
+    curl -i localhost:8080/lots/1
+    */
+    @GetMapping("{id}/history")
+    List<BidDTO> history(@PathVariable UUID id) {
+        return lotService.getBidsForLot(id);
     }
 
     /* curl sample :
