@@ -13,9 +13,11 @@ import java.util.UUID;
 public class MemberController {
 
     private final MemberRepository repository;
+    private final MemberService memberService;
 
-    public MemberController(MemberRepository repository) {
+    public MemberController(MemberRepository repository, MemberService memberService) {
         this.repository = repository;
+        this.memberService = memberService;
     }
 
     /* curl sample :
@@ -31,12 +33,11 @@ public class MemberController {
         return memberDTOs;
     }
 
-    @GetMapping("{id}/bids")
-    List<BidDTO> getMemberBids(@PathVariable UUID id) {
-        Member member = repository.findById(id)
-                .orElseThrow(() -> new MemberNotFoundException(id));
+    @GetMapping("me/bids")
+    List<BidDTO> getMemberBids() {
+        Member currentUser = memberService.getCurrentMember();
         List<BidDTO> bidDTOs = new ArrayList<BidDTO>();
-        for (Bid bid : member.getBids()) {
+        for (Bid bid : currentUser.getBids()) {
             bidDTOs.add(BidDTO.toDto(bid));
         };
         return bidDTOs;

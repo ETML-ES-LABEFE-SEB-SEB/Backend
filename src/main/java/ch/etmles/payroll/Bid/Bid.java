@@ -15,12 +15,12 @@ public class Bid {
     private BigDecimal bidValue;
     private LocalDateTime bidDate;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="lot_Id")
     private Lot bidUpLot;
 
-    @OneToOne
-    @JoinColumn(name="member_Id")
+    @ManyToOne
+    @JoinColumn(name = "member_id")
     private Member member;
 
     public Bid() {}

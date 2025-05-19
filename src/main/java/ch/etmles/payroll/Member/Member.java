@@ -1,13 +1,11 @@
 package ch.etmles.payroll.Member;
 
 import ch.etmles.payroll.Bid.Bid;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import org.springframework.context.annotation.Primary;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,12 +21,12 @@ public class Member {
 
     private BigDecimal reservedWallet;
 
-    @OneToMany
-    private List<Bid> bids;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bid> bids = new ArrayList<>();
 
     public Member() {}
 
-    public Member(String username, String profilePicture, BigDecimal availableWallet, BigDecimal reservedWallet) {
+    public Member(String username, String profilePicture, BigDecimal availableWallet, BigDecimal reservedWallet, List<Bid> bids) {
         this.setUsername(username);
         this.setProfilePicture(profilePicture);
         this.setAvailableWallet(availableWallet);
@@ -82,5 +80,10 @@ public class Member {
 
     public void setBids(List<Bid> bids) {
         this.bids = bids;
+    }
+
+    public void addBid(Bid bid) {
+        this.bids.add(bid);
+        bid.setMember(this);
     }
 }
