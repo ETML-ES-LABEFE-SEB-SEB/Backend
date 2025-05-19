@@ -39,6 +39,7 @@ class Member {
     decimal availableWallet
     decimal reservedWallet
     List<Bid> bids
+    List<Lot> lots
 }
 
 enum LotStatus {
@@ -51,6 +52,7 @@ Lot - Tag
 Lot - Category
 Bid - Lot
 Bid - Member
+Member - Lot
 Lot - LotStatus
 
 @enduml

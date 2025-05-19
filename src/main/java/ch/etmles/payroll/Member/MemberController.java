@@ -33,16 +33,19 @@ public class MemberController {
     /* curl sample :
     curl -i localhost:8080/members
     */
-    @GetMapping("")
-    List<MemberDTO> getMembers() {
-        List<Member> members = repository.findAll();
-        List<MemberDTO> memberDTOs = new ArrayList<>();
-        for (Member member : members) {
-            memberDTOs.add(MemberDTO.toDTO(member));
-        }
-        return memberDTOs;
-    }
+    //    @GetMapping("")
+    //    List<MemberDTO> getMembers() {
+    //        List<Member> members = repository.findAll();
+    //        List<MemberDTO> memberDTOs = new ArrayList<>();
+    //        for (Member member : members) {
+    //            memberDTOs.add(MemberDTO.toDTO(member));
+    //        }
+    //        return memberDTOs;
+    //    }
 
+    /* curl sample :
+    curl -i localhost:8080/me
+    */
     @GetMapping("me")
     MemberDTO getMember() {
         Member currentUser = memberService.getCurrentMember();
@@ -51,6 +54,9 @@ public class MemberController {
         return null;
     }
 
+    /* curl sample :
+    curl -i localhost:8080/me/bids
+    */
     @GetMapping("me/bids")
     Page<BidDTO> getMemberBids(@RequestParam(defaultValue = "1") int page) {
         if(page < 1) page = 1;
@@ -63,6 +69,9 @@ public class MemberController {
         return currentUserBids.map(BidDTO::toDto);
     }
 
+    /* curl sample :
+    curl -i localhost:8080/me/lots
+    */
     @GetMapping("me/lots")
     Page<LotDTO> getMemberLots(@RequestParam(defaultValue = "1") int page) {
         if(page < 1) page = 1;
