@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,37 +39,9 @@ public class BidController {
         return BidDTO.toDto(bid);
     }
 
-//    /* curl sample :
-//    curl -i localhost:8080/lots/UUID
-//     */
-//    @GetMapping("lots/{lotId}")
-//    List<BidDTO> getBidsForLot(@PathVariable UUID lotId) {
-//        return service.getBidsForLot(lotId);
-//    }
-
     @GetMapping("lots/{lotId}/bids-with-members")
     List<BidDTO> getBidsWithMembers(@PathVariable UUID lotId) {
         return lotService.getBidsForLot(lotId);
-    }
-
-    /* curl sample :
-    curl -i -X POST localhost:8080/bids/lots/UUID ^
-        -H "Content-type:application/json" ^
-        -d "{\"bidValue\": \"29.95\", \"bidDate\": \"12.05.2025\" }"
-    */
-    @PostMapping("lots/{lotId}")
-    ResponseEntity<Bid> newBidForLot(@PathVariable UUID lotId,@RequestBody BigDecimal bidValue) {
-        Lot lotToBidOn = lotService.getOpenLotById(lotId);
-        Bid newBid = new Bid();
-        newBid.setBidUpLot(lotToBidOn);
-        newBid.setOwner(memberService.getCurrentMember());
-        newBid.setBidValue(bidValue);
-        if(bidService.checkBidValidity(newBid)) {
-            repository.save(newBid);
-            return new ResponseEntity<>(newBid, HttpStatus.CREATED);
-        } else {
-            throw new BidTooLowException(lotToBidOn.getId());
-        }
     }
 
     @PutMapping("{id}")

@@ -1,33 +1,35 @@
 package ch.etmles.payroll.Member;
 
-import ch.etmles.payroll.Bid.Bid;
-import ch.etmles.payroll.Bid.BidDTO;
-import ch.etmles.payroll.Bid.BidRepository;
-import ch.etmles.payroll.Lot.Lot;
-import ch.etmles.payroll.Lot.LotDTO;
-import ch.etmles.payroll.Lot.LotRepository;
+import ch.etmles.payroll.Bid.*;
+import ch.etmles.payroll.Lot.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/me/")
 public class MemberController {
 
     private final MemberRepository repository;
     private final MemberService memberService;
     private final LotRepository lotRepository;
     private final BidRepository bidRepository;
+    private final BidService bidService;
+    private final LotService lotService;
 
-    public MemberController(MemberRepository repository, MemberService memberService, LotRepository lotRepository, BidRepository bidRepository) {
+    public MemberController(MemberRepository repository, MemberService memberService, LotRepository lotRepository, BidRepository bidRepository, BidService bidService, LotService lotService) {
         this.repository = repository;
         this.memberService = memberService;
         this.lotRepository = lotRepository;
         this.bidRepository = bidRepository;
+        this.bidService = bidService;
+        this.lotService = lotService;
+
     }
 
     /* curl sample :
@@ -46,7 +48,7 @@ public class MemberController {
     /* curl sample :
     curl -i localhost:8080/me
     */
-    @GetMapping("me")
+    @GetMapping("")
     MemberDTO getMember() {
         Member currentUser = memberService.getCurrentMember();
         if(currentUser != null)
@@ -57,7 +59,7 @@ public class MemberController {
     /* curl sample :
     curl -i localhost:8080/me/bids
     */
-    @GetMapping("me/bids")
+    @GetMapping("bids")
     Page<BidDTO> getMemberBids(@RequestParam(defaultValue = "1") int page) {
         if(page < 1) page = 1;
 
@@ -72,7 +74,7 @@ public class MemberController {
     /* curl sample :
     curl -i localhost:8080/me/lots
     */
-    @GetMapping("me/lots")
+    @GetMapping("lots")
     Page<LotDTO> getMemberLots(@RequestParam(defaultValue = "1") int page) {
         if(page < 1) page = 1;
 
@@ -83,5 +85,34 @@ public class MemberController {
         );
 
         return currentUserLots.map(LotDTO::toDto);
+    }
+
+    /* curl sample :
+    curl -i -X POST localhost:8080/bids/lots/UUID ^
+        -H "Content-type:application/json" ^
+        -d "{\"bidValue\": \"29.95\", \"bidDate\": \"12.05.2025\" }"
+    */
+    @PostMapping("bids")
+    ResponseEntity<Bid> newBidForLot(AddBidDTO bid) {
+
+        Lot lotToBidOn = lotService.getOpenLotById(bid.getLotId());
+
+        // Reject if currentUser owns the lot
+        if(memberService.lotIsOwnByCurrentMember(lotToBidOn))
+            throw new LotIsOwnByCurrentMemberException(lotToBidOn.getId());
+
+        Bid newBid = new Bid();
+        newBid.setBidUpLot(lotToBidOn);
+        newBid.setOwner(memberService.getCurrentMember());
+        newBid.setBidValue(bid.getAmount());
+        newBid.setBidDate(LocalDateTime.now());
+
+        // Check validity of the bid (should be higher than the current best)
+        if(bidService.checkBidValidity(newBid)) {
+            bidRepository.save(newBid);
+            return new ResponseEntity<>(newBid, HttpStatus.CREATED);
+        } else {
+            throw new BidTooLowException(lotToBidOn.getId());
+        }
     }
 }

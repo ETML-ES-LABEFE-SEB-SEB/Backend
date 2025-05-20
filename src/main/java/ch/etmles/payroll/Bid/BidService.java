@@ -26,14 +26,19 @@ public class BidService {
     public boolean checkBidValidity(Bid bid)
     {
         List<Bid> lotBids = bidRepository.findByBidUpLot(bid.getBidUpLot());
-        lotBids.sort((b1, b2) -> b1.getBidValue().compareTo(b2.getBidValue()));
+        lotBids.sort(Comparator.comparing(Bid::getBidValue));
 
         if(!lotBids.isEmpty()){
             Bid highest = lotBids.getLast();
 
             // newBid is higher than the current one, VALID !
-            if(highest.getBidValue().compareTo(bid.getBidValue()) < 0)
+            if(highest.getBidValue().compareTo(bid.getBidValue()) < 0) {
+
+                // Update the lot
+                bid.getBidUpLot().setCurrentPrice(bid.getBidValue());
+                lotRepository.save(bid.getBidUpLot());
                 return true;
+            }
             else
                 return false;
         }

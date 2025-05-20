@@ -42,6 +42,7 @@ public class Lot {
 
     @ManyToOne
     @JsonIgnore
+    @JoinColumn(name="owner_Id")
     private Member owner;
 
     @OneToMany(mappedBy = "bidUpLot", cascade = CascadeType.ALL, orphanRemoval = true)

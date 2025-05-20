@@ -6,6 +6,7 @@ import java.util.UUID;
 
 public class BidDTO {
 
+    private UUID id;
     private String username;
     private String profilePicture;
     private BigDecimal bidValue;
@@ -53,8 +54,17 @@ public class BidDTO {
         this.lotId = lotId;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public static BidDTO toDto(Bid bid) {
         BidDTO dto = new BidDTO();
+        dto.setId(bid.getId());
         dto.setUsername(bid.getOwner().getUsername());
         dto.setProfilePicture(bid.getOwner().getProfilePicture());
         dto.setBidValue(bid.getBidValue());
