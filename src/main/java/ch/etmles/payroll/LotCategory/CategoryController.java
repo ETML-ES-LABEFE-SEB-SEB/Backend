@@ -1,5 +1,6 @@
 package ch.etmles.payroll.LotCategory;
 
+import ch.etmles.payroll.LotCategory.Exceptions.CategoryNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

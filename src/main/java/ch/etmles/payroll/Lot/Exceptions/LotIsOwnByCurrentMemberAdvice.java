@@ -1,4 +1,4 @@
-package ch.etmles.payroll.Tag;
+package ch.etmles.payroll.Lot.Exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class TagNtoFoundAdvice {
-
+public class LotIsOwnByCurrentMemberAdvice {
     @ResponseBody
-    @ExceptionHandler(TagNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String tagNotFoundHandler(TagNotFoundException ex) { return ex.getMessage(); }
+    @ExceptionHandler(LotNotFoundException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    String LotIsOwnByCurrentMemberHandler(LotIsOwnByCurrentMemberException ex) { return ex.getMessage(); }
 }

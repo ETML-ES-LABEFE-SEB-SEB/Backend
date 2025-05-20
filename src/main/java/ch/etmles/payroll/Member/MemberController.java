@@ -1,7 +1,13 @@
 package ch.etmles.payroll.Member;
 
 import ch.etmles.payroll.Bid.*;
+import ch.etmles.payroll.Bid.DTO.AddBidDTO;
+import ch.etmles.payroll.Bid.DTO.BidDTO;
+import ch.etmles.payroll.Bid.Exceptions.BidTooLowException;
 import ch.etmles.payroll.Lot.*;
+import ch.etmles.payroll.Lot.DTO.LotDTO;
+import ch.etmles.payroll.Lot.Exceptions.LotIsOwnByCurrentMemberException;
+import ch.etmles.payroll.Member.DTO.MemberDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

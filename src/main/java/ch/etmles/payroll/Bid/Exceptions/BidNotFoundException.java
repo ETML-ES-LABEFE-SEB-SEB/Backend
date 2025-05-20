@@ -1,4 +1,4 @@
-package ch.etmles.payroll.Bid;
+package ch.etmles.payroll.Bid.Exceptions;
 
 import java.util.UUID;
 

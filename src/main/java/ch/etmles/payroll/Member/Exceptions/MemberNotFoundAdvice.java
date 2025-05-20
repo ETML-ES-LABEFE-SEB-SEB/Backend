@@ -1,4 +1,4 @@
-package ch.etmles.payroll.LotCategory;
+package ch.etmles.payroll.Member.Exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class CategoryNotFoundAdvice {
+public class MemberNotFoundAdvice {
 
     @ResponseBody
-    @ExceptionHandler(CategoryNotFoundException.class)
+    @ExceptionHandler(MemberNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String lotCategoryNotFoundHandler(CategoryNotFoundException ex) { return ex.getMessage(); }
+    String memberNotFoundHandler(MemberNotFoundException ex) { return ex.getMessage(); }
 }

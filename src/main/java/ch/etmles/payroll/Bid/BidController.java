@@ -1,15 +1,14 @@
 package ch.etmles.payroll.Bid;
 
-import ch.etmles.payroll.Lot.Lot;
-import ch.etmles.payroll.Lot.LotNotFoundException;
+import ch.etmles.payroll.Bid.DTO.BidDTO;
+import ch.etmles.payroll.Bid.Exceptions.BidNotFoundException;
+import ch.etmles.payroll.Lot.Exceptions.LotNotFoundException;
 import ch.etmles.payroll.Lot.LotService;
 import ch.etmles.payroll.Member.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 

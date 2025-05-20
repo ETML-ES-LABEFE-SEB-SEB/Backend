@@ -1,5 +1,6 @@
-package ch.etmles.payroll.Lot;
+package ch.etmles.payroll.Lot.DTO;
 
+import ch.etmles.payroll.Lot.Lot;
 import ch.etmles.payroll.Tag.Tag;
 
 import java.math.BigDecimal;

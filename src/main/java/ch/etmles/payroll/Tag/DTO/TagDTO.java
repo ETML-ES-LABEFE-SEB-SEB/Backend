@@ -1,4 +1,6 @@
-package ch.etmles.payroll.Tag;
+package ch.etmles.payroll.Tag.DTO;
+
+import ch.etmles.payroll.Tag.Tag;
 
 public class TagDTO {
 

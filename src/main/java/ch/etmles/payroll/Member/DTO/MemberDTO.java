@@ -1,6 +1,6 @@
-package ch.etmles.payroll.Member;
+package ch.etmles.payroll.Member.DTO;
 
-import ch.etmles.payroll.Bid.BidDTO;
+import ch.etmles.payroll.Member.Member;
 
 import java.math.BigDecimal;
 import java.util.UUID;

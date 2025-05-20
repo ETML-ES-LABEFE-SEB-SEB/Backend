@@ -1,4 +1,4 @@
-package ch.etmles.payroll.LotCategory;
+package ch.etmles.payroll.LotCategory.Exceptions;
 
 import java.util.UUID;
 

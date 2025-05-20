@@ -1,4 +1,4 @@
-package ch.etmles.payroll.Tag;
+package ch.etmles.payroll.Tag.Exceptions;
 
 import java.util.UUID;
 

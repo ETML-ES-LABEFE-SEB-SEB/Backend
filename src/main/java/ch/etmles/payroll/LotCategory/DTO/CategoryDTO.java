@@ -1,4 +1,6 @@
-package ch.etmles.payroll.LotCategory;
+package ch.etmles.payroll.LotCategory.DTO;
+
+import ch.etmles.payroll.LotCategory.Category;
 
 public class CategoryDTO {
     private String name;

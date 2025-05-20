@@ -1,4 +1,4 @@
-package ch.etmles.payroll.Member;
+package ch.etmles.payroll.Bid.Exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class MemberNotFoundAdvice {
-
+public class BidNotFoundAdvice {
     @ResponseBody
-    @ExceptionHandler(MemberNotFoundException.class)
+    @ExceptionHandler(BidNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String memberNotFoundHandler(MemberNotFoundException ex) { return ex.getMessage(); }
+    String bidNotFoundHandler(BidNotFoundException ex) { return ex.getMessage(); }
 }

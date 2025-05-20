@@ -1,15 +1,15 @@
 package ch.etmles.payroll.Lot;
 
 import ch.etmles.payroll.Bid.Bid;
-import ch.etmles.payroll.Bid.BidDTO;
+import ch.etmles.payroll.Bid.DTO.BidDTO;
 import ch.etmles.payroll.Bid.BidRepository;
-import ch.etmles.payroll.LotCategory.Category;
+import ch.etmles.payroll.Lot.Exceptions.LotNotFoundException;
+import ch.etmles.payroll.Lot.Exceptions.LotNotOpenedException;
 import ch.etmles.payroll.LotCategory.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

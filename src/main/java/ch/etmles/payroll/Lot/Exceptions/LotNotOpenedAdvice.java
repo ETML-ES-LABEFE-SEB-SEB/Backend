@@ -1,4 +1,4 @@
-package ch.etmles.payroll.Lot;
+package ch.etmles.payroll.Lot.Exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

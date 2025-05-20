@@ -1,4 +1,4 @@
-package ch.etmles.payroll.Bid;
+package ch.etmles.payroll.LotCategory.Exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class BidNotFoundAdvice {
+public class CategoryNotFoundAdvice {
+
     @ResponseBody
-    @ExceptionHandler(BidNotFoundException.class)
+    @ExceptionHandler(CategoryNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String bidNotFoundHandler(BidNotFoundException ex) { return ex.getMessage(); }
+    String lotCategoryNotFoundHandler(CategoryNotFoundException ex) { return ex.getMessage(); }
 }

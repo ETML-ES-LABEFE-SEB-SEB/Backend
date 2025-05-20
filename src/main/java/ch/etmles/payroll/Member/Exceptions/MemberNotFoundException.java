@@ -1,4 +1,4 @@
-package ch.etmles.payroll.Member;
+package ch.etmles.payroll.Member.Exceptions;
 
 import java.util.UUID;
 
