@@ -2,6 +2,7 @@ package ch.etmles.payroll.LotCategory;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,9 +15,11 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Category getCategoryFromId(UUID categoryId)
+    public List<Category> getCategoryFromId(UUID categoryId)
     {
         Optional<Category> category = categoryRepository.findById(categoryId);
-        return category.orElse(null);
+        List<Category> childCategories = categoryRepository.findCategoriesByParent(category.get());
+        childCategories.add(category.get());
+        return childCategories;
     }
 }

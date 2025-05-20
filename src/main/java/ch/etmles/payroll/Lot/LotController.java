@@ -1,9 +1,13 @@
 package ch.etmles.payroll.Lot;
 
 import ch.etmles.payroll.Bid.BidDTO;
+import ch.etmles.payroll.LotCategory.Category;
+import ch.etmles.payroll.LotCategory.CategoryNotFoundException;
+import ch.etmles.payroll.LotCategory.CategoryService;
 import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,21 +24,30 @@ public class LotController {
 
     private final LotRepository repository;
     private final LotService lotService;
+    private final CategoryService categoryService;
 
-    public LotController(LotRepository repository, LotService lotService) {
+    public LotController(LotRepository repository, LotService lotService, CategoryService categoryService) {
         this.repository = repository;
         this.lotService = lotService;
+        this.categoryService = categoryService;
     }
 
     /* curl sample :
     curl -i localhost:8080/lots
     */
     @GetMapping("")
-    Page<Lot> getLots(
-            @RequestParam(defaultValue = "1") int page
-    ) {
-        if(page < 1) page = 1;
-        return repository.findAll(PageRequest.of(page-1, 12, Sort.by(Sort.Direction.ASC,"endDate")));
+    Page<Lot> getLots(@RequestParam(defaultValue = "") UUID categoryId, @RequestParam(defaultValue = "1") int page) {
+        if (page < 1) page = 1;
+        Pageable pageable = PageRequest.of(page - 1, 12, Sort.by(Sort.Direction.ASC, "endDate"));
+
+        if (categoryId == null)
+            return repository.findAll(pageable);
+
+        List<Category> categories = categoryService.getCategoryFromId(categoryId);
+        if (categories.isEmpty())
+            throw new CategoryNotFoundException(categoryId);
+
+        return repository.findByCategoryIn(categories, pageable);
     }
 
     /* curl sample :
