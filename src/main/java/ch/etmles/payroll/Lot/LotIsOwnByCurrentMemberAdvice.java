@@ -12,5 +12,4 @@ public class LotIsOwnByCurrentMemberAdvice {
     @ExceptionHandler(LotNotFoundException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     String LotIsOwnByCurrentMemberHandler(LotIsOwnByCurrentMemberException ex) { return ex.getMessage(); }
-
 }
