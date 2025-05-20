@@ -34,7 +34,7 @@ public class BidController {
     @GetMapping("{id}")
     BidDTO one(@PathVariable UUID id) {
         Bid bid = repository.findById(id)
-                .orElseThrow(() -> new LotNotFoundException(id));
+                .orElseThrow(() -> new BidNotFoundException(id));
         return BidDTO.toDto(bid);
     }
 
