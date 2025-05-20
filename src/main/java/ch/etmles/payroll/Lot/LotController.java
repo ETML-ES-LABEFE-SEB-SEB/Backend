@@ -1,5 +1,6 @@
 package ch.etmles.payroll.Lot;
 
+import ch.etmles.payroll.Bid.BidDTO;
 import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,19 +15,22 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/lots")
 public class LotController {
 
     private final LotRepository repository;
+    private final LotService lotService;
 
-    public LotController(LotRepository repository) {
+    public LotController(LotRepository repository, LotService lotService) {
         this.repository = repository;
+        this.lotService = lotService;
     }
 
     /* curl sample :
     curl -i localhost:8080/lots
     */
-    @GetMapping("/lots")
-    public Page<Lot> getLots(
+    @GetMapping("")
+    Page<Lot> getLots(
             @RequestParam(defaultValue = "1") int page
     ) {
         if(page < 1) page = 1;
@@ -36,10 +40,18 @@ public class LotController {
     /* curl sample :
     curl -i localhost:8080/lots/1
     */
-    @GetMapping("/lots/{id}")
+    @GetMapping("{id}")
     Lot one(@PathVariable UUID id) {
         return repository.findById(id)
                 .orElseThrow(() -> new LotNotFoundException(id));
+    }
+
+    /* curl sample :
+    curl -i localhost:8080/lots/1
+    */
+    @GetMapping("{id}/history")
+    List<BidDTO> history(@PathVariable UUID id) {
+        return lotService.getBidsForLot(id);
     }
 
     /* curl sample :
@@ -47,7 +59,7 @@ public class LotController {
         -H "Content-type:application/json" ^
         -d "{\"name\": \"test\", \"description\": \"test description\", \"pictureUrl\": \"https://picsum.photos/id/237/600/400\", \"startPrice\": "12.95", \"startDate\": \"2025-04-25 12:30\", \"startDate\": \"2025-04-30 12:30\", \"category\": null, \"status\": \"ACTIVATED\" }"
     */
-    @PostMapping("/lots")
+    @PostMapping("")
     ResponseEntity<Lot> newLot(@RequestBody Lot lot) {
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(lot));
     }
@@ -57,7 +69,7 @@ public class LotController {
         -H "Content-type:application/json" ^
         -d "{\"name\": \"test\", \"description\": \"test description\", \"pictureUrl\": \"https://picsum.photos/id/237/600/400\", \"startPrice\": "12.95", \"startDate\": \"2025-04-25 12:30\", \"startDate\": \"2025-04-30 12:30\", \"category\": null, \"status\": \"ACTIVATED\" }"
      */
-    @PutMapping("/lots/{id}")
+    @PutMapping("{id}")
     Lot replaceLot(@RequestBody Lot newLot, @PathVariable UUID id) {
         return repository.findById(id)
                 .map(lot -> {
@@ -82,7 +94,7 @@ public class LotController {
     /* curl sample :
     curl -i -X DELETE localhost:8080/lots/2
     */
-    @DeleteMapping("/lots/{id}")
+    @DeleteMapping("{id}")
     ResponseEntity<String> deleteLot(@PathVariable UUID id) {
         if (!repository.existsById(id)) {
             throw new LotNotFoundException(id);
