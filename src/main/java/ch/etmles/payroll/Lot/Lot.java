@@ -45,6 +45,7 @@ public class Lot {
     private Member owner;
 
     @OneToMany(mappedBy = "bidUpLot", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Bid> bids = new ArrayList<>();
 
     public Lot(){}
