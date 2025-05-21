@@ -4,10 +4,14 @@ import ch.etmles.Backend.Bid.*;
 import ch.etmles.Backend.Bid.DTO.AddBidDTO;
 import ch.etmles.Backend.Bid.DTO.BidDTO;
 import ch.etmles.Backend.Bid.Exceptions.BidTooLowException;
+import ch.etmles.Backend.ListApiResponse;
 import ch.etmles.Backend.Lot.*;
 import ch.etmles.Backend.Lot.DTO.LotDTO;
 import ch.etmles.Backend.Lot.Exceptions.LotIsOwnByCurrentMemberException;
 import ch.etmles.Backend.Member.DTO.MemberDTO;
+import ch.etmles.Backend.Member.Exceptions.MemberUnauthorizedAdvice;
+import ch.etmles.Backend.Member.Exceptions.MemberUnauthorizedException;
+import ch.etmles.Backend.SingleApiResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -35,53 +39,42 @@ public class MemberController {
         this.bidRepository = bidRepository;
         this.bidService = bidService;
         this.lotService = lotService;
-
     }
-
-    /* curl sample :
-    curl -i localhost:8080/members
-    */
-    //    @GetMapping("")
-    //    List<MemberDTO> getMembers() {
-    //        List<Member> members = repository.findAll();
-    //        List<MemberDTO> memberDTOs = new ArrayList<>();
-    //        for (Member member : members) {
-    //            memberDTOs.add(MemberDTO.toDTO(member));
-    //        }
-    //        return memberDTOs;
-    //    }
 
     /* curl sample :
     curl -i localhost:8080/me
     */
     @GetMapping("")
-    MemberDTO getMember() {
+    SingleApiResponse<MemberDTO> getMember() {
         Member currentUser = memberService.getCurrentMember();
         if(currentUser != null)
-            return MemberDTO.toDTO(currentUser);
-        return null;
+            return new SingleApiResponse<>(MemberDTO.toDTO(currentUser));
+        throw new MemberUnauthorizedException();
     }
 
     /* curl sample :
     curl -i localhost:8080/me/bids
     */
     @GetMapping("bids")
-    Page<BidDTO> getMemberBids(@RequestParam(defaultValue = "1") int page) {
+    ListApiResponse<BidDTO> getMemberBids(@RequestParam(defaultValue = "1") int page) {
         if(page < 1) page = 1;
 
         Member currentUser = memberService.getCurrentMember();
+        if(currentUser == null)
+            throw new MemberUnauthorizedException();
+
         Page<Bid> currentUserBids = bidRepository.findByOwner(
             currentUser,
             PageRequest.of(page-1, 12, Sort.by(Sort.Direction.DESC, "bidDate"))
         );
-        return currentUserBids.map(BidDTO::toDto);
+        return new ListApiResponse<>(currentUserBids.map(BidDTO::toDto));
     }
 
     /* curl sample :
     curl -i localhost:8080/me/lots
     */
     @GetMapping("lots")
-    Page<LotDTO> getMemberLots(@RequestParam(defaultValue = "1") int page) {
+    ListApiResponse<LotDTO> getMemberLots(@RequestParam(defaultValue = "1") int page) {
         if(page < 1) page = 1;
 
         Member currentUser = memberService.getCurrentMember();
@@ -90,7 +83,7 @@ public class MemberController {
             PageRequest.of(page-1, 12, Sort.by(Sort.Direction.DESC, "endDate"))
         );
 
-        return currentUserLots.map(LotDTO::toDto);
+        return new ListApiResponse<>(currentUserLots.map(LotDTO::toDto));
     }
 
     /* curl sample :

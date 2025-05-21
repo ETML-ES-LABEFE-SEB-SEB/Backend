@@ -1,11 +1,13 @@
 package ch.etmles.Backend.Lot;
 
 import ch.etmles.Backend.Bid.DTO.BidDTO;
+import ch.etmles.Backend.ListApiResponse;
+import ch.etmles.Backend.Lot.DTO.LotDTO;
 import ch.etmles.Backend.Lot.Exceptions.LotNotFoundException;
 import ch.etmles.Backend.LotCategory.Category;
 import ch.etmles.Backend.LotCategory.Exceptions.CategoryNotFoundException;
 import ch.etmles.Backend.LotCategory.CategoryService;
-import org.springframework.data.domain.Page;
+import ch.etmles.Backend.SingleApiResponse;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -34,35 +37,37 @@ public class LotController {
     curl -i localhost:8080/lots
     */
     @GetMapping("")
-    Page<Lot> getLots(@RequestParam(defaultValue = "") UUID categoryId, @RequestParam(defaultValue = "1") int page) {
+    ListApiResponse<LotDTO> getLots(@RequestParam(defaultValue = "") UUID categoryId, @RequestParam(defaultValue = "1") int page) {
         if (page < 1) page = 1;
         Pageable pageable = PageRequest.of(page - 1, 12, Sort.by(Sort.Direction.ASC, "endDate"));
 
         if (categoryId == null)
-            return repository.findAll(pageable);
+            return new ListApiResponse<LotDTO>(repository.findAll(pageable).map(LotDTO::toDto));
 
         List<Category> categories = categoryService.getCategoryFromId(categoryId);
         if (categories.isEmpty())
             throw new CategoryNotFoundException(categoryId);
 
-        return repository.findByCategoryIn(categories, pageable);
+        return new ListApiResponse<LotDTO>(repository.findByCategoryIn(categories, pageable).map(LotDTO::toDto));
     }
 
     /* curl sample :
     curl -i localhost:8080/lots/1
     */
     @GetMapping("{id}")
-    Lot one(@PathVariable UUID id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new LotNotFoundException(id));
+    SingleApiResponse<LotDTO> one(@PathVariable UUID id) {
+        Optional<Lot> toFind = repository.findById(id);
+        if(toFind.isEmpty())
+            throw new LotNotFoundException(id);
+        return new SingleApiResponse<LotDTO>(LotDTO.toDto(toFind.get()));
     }
 
     /* curl sample :
     curl -i localhost:8080/lots/1
     */
     @GetMapping("{id}/history")
-    List<BidDTO> history(@PathVariable UUID id) {
-        return lotService.getBidsForLot(id);
+    ListApiResponse<BidDTO> history(@PathVariable UUID id) {
+        return new ListApiResponse<BidDTO>(lotService.getBidsForLot(id));
     }
 
     /* curl sample :
@@ -71,8 +76,8 @@ public class LotController {
         -d "{\"name\": \"test\", \"description\": \"test description\", \"pictureUrl\": \"https://picsum.photos/id/237/600/400\", \"startPrice\": "12.95", \"startDate\": \"2025-04-25 12:30\", \"startDate\": \"2025-04-30 12:30\", \"category\": null, \"status\": \"ACTIVATED\" }"
     */
     @PostMapping("")
-    ResponseEntity<Lot> newLot(@RequestBody Lot lot) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(lot));
+    ResponseEntity<SingleApiResponse<LotDTO>> newLot(@RequestBody Lot lot) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(new SingleApiResponse<LotDTO>(LotDTO.toDto(repository.save(lot))));
     }
 
     /* curl sample :
@@ -81,8 +86,8 @@ public class LotController {
         -d "{\"name\": \"test\", \"description\": \"test description\", \"pictureUrl\": \"https://picsum.photos/id/237/600/400\", \"startPrice\": "12.95", \"startDate\": \"2025-04-25 12:30\", \"startDate\": \"2025-04-30 12:30\", \"category\": null, \"status\": \"ACTIVATED\" }"
      */
     @PutMapping("{id}")
-    Lot replaceLot(@RequestBody Lot newLot, @PathVariable UUID id) {
-        return repository.findById(id)
+    SingleApiResponse<LotDTO> replaceLot(@RequestBody Lot newLot, @PathVariable UUID id) {
+        return new SingleApiResponse<LotDTO>(LotDTO.toDto(repository.findById(id)
                 .map(lot -> {
                     lot.setName(newLot.getName());
                     lot.setDescription(newLot.getDescription());
@@ -99,7 +104,7 @@ public class LotController {
                 .orElseGet(() -> {
                     newLot.setId(id);
                     return repository.save(newLot);
-                });
+                })));
     }
 
     /* curl sample :

@@ -1,10 +1,14 @@
 package ch.etmles.Backend.LotCategory;
 
+import ch.etmles.Backend.ListApiResponse;
+import ch.etmles.Backend.LotCategory.DTO.CategoryDTO;
 import ch.etmles.Backend.LotCategory.Exceptions.CategoryNotFoundException;
+import ch.etmles.Backend.SingleApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,17 +26,21 @@ public class CategoryController {
     curl -i localhost:8080/categories
     */
     @GetMapping("")
-    List<Category> all() {
-        return repository.findAll();
+    ListApiResponse<CategoryDTO> all() {
+        List<CategoryDTO> categoryDTOs = new ArrayList<>();
+        List<Category> categories = repository.findAll();
+        for(Category category : categories)
+            categoryDTOs.add(CategoryDTO.toDTO(category));
+        return new ListApiResponse<CategoryDTO>(categoryDTOs);
     }
 
     /* curl sample :
     curl -i localhost:8080/categories/1
     */
     @GetMapping("{id}")
-    Category one(@PathVariable UUID id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
+    SingleApiResponse<CategoryDTO> one(@PathVariable UUID id) {
+        return new SingleApiResponse<>(CategoryDTO.toDTO(repository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException(id))));
     }
 
     /* curl sample :
@@ -41,9 +49,9 @@ public class CategoryController {
         -d "{\"name\": \"test\", \"parent\": null }"
     */
     @PostMapping("")
-    ResponseEntity<Category> newLotCategory(@RequestBody Category category) {
+    ResponseEntity<CategoryDTO> newLotCategory(@RequestBody Category category) {
         category.setId(null);
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(category));
+        return ResponseEntity.status(HttpStatus.CREATED).body(CategoryDTO.toDTO(repository.save(category)));
     }
 
     /* curl sample :

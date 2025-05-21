@@ -1,6 +1,7 @@
 package ch.etmles.Backend.Lot.DTO;
 
 import ch.etmles.Backend.Lot.Lot;
+import ch.etmles.Backend.LotCategory.Category;
 import ch.etmles.Backend.Tag.Tag;
 
 import java.math.BigDecimal;
@@ -18,7 +19,7 @@ public class LotDTO {
     private LocalDateTime endDate;
     private BigDecimal startPrice;
     private BigDecimal currentPrice;
-    private String categoryName;
+    private Category category;
     private String status;
     private List<String> tagNames;
 
@@ -39,14 +40,6 @@ public class LotDTO {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
     }
 
     public BigDecimal getCurrentPrice() {
@@ -113,6 +106,14 @@ public class LotDTO {
         this.id = id;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     public static LotDTO toDto(Lot lot) {
         LotDTO dto = new LotDTO();
         dto.setId(lot.getId());
@@ -123,7 +124,7 @@ public class LotDTO {
         dto.setEndDate(lot.getEndDate());
         dto.setStartPrice(lot.getStartPrice());
         dto.setCurrentPrice(lot.getCurrentPrice());
-        dto.setCategoryName(lot.getCategory() != null ? lot.getCategory().getName() : null);
+        dto.setCategory(lot.getCategory() != null ? lot.getCategory() : null);
         dto.setStatus(lot.getStatus() != null ? lot.getStatus().name() : null);
         dto.setTagNames(lot.getTags());
         return dto;

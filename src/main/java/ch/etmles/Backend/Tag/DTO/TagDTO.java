@@ -14,7 +14,7 @@ public class TagDTO {
         this.label = label;
     }
 
-    public TagDTO toDto(Tag tag)
+    public static TagDTO toDto(Tag tag)
     {
         TagDTO dto = new TagDTO();
         dto.setLabel(tag.getLabel());
