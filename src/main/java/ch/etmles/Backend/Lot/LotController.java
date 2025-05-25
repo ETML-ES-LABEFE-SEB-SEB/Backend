@@ -2,12 +2,15 @@ package ch.etmles.Backend.Lot;
 
 import ch.etmles.Backend.Bid.DTO.BidDTO;
 import ch.etmles.Backend.ListApiResponse;
+import ch.etmles.Backend.Lot.DTO.AddLotDTO;
 import ch.etmles.Backend.Lot.DTO.LotDTO;
 import ch.etmles.Backend.Lot.Exceptions.LotNotFoundException;
 import ch.etmles.Backend.LotCategory.Category;
 import ch.etmles.Backend.LotCategory.Exceptions.CategoryNotFoundException;
 import ch.etmles.Backend.LotCategory.CategoryService;
+import ch.etmles.Backend.Member.MemberService;
 import ch.etmles.Backend.SingleApiResponse;
+import ch.etmles.Backend.Tag.TagService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,11 +30,15 @@ public class LotController {
     private final LotRepository repository;
     private final LotService lotService;
     private final CategoryService categoryService;
+    private final MemberService memberService;
+    private final TagService tagService;
 
-    public LotController(LotRepository repository, LotService lotService, CategoryService categoryService) {
+    public LotController(LotRepository repository, LotService lotService, CategoryService categoryService, MemberService memberService, TagService tagService) {
         this.repository = repository;
         this.lotService = lotService;
         this.categoryService = categoryService;
+        this.memberService = memberService;
+        this.tagService = tagService;
     }
 
     /* curl sample :
@@ -44,7 +52,7 @@ public class LotController {
         if (categoryId == null)
             return new ListApiResponse<LotDTO>(repository.findAll(pageable).map(LotDTO::toDto));
 
-        List<Category> categories = categoryService.getCategoryFromId(categoryId);
+        List<Category> categories = categoryService.getCategoryChainFromId(categoryId);
         if (categories.isEmpty())
             throw new CategoryNotFoundException(categoryId);
 
@@ -76,8 +84,17 @@ public class LotController {
         -d "{\"name\": \"test\", \"description\": \"test description\", \"pictureUrl\": \"https://picsum.photos/id/237/600/400\", \"startPrice\": "12.95", \"startDate\": \"2025-04-25 12:30\", \"startDate\": \"2025-04-30 12:30\", \"category\": null, \"status\": \"ACTIVATED\" }"
     */
     @PostMapping("")
-    ResponseEntity<SingleApiResponse<LotDTO>> newLot(@RequestBody Lot lot) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(new SingleApiResponse<LotDTO>(LotDTO.toDto(repository.save(lot))));
+    ResponseEntity<SingleApiResponse<LotDTO>> newLot(@RequestBody AddLotDTO lot) {
+        Lot newLot = new Lot();
+        newLot.setDescription(lot.getDescription());
+        newLot.setStartPrice(lot.getStartPrice());
+        newLot.setCurrentPrice(lot.getStartPrice());
+        newLot.setStartDate(LocalDateTime.now());
+        newLot.setEndDate(lot.getEndDate());
+        newLot.setCategory(categoryService.getCategoryFromId(lot.categoryId));
+        newLot.setOwner(memberService.getCurrentMember());
+        newLot.setTags(tagService.getTagsFromString(lot.getTags()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new SingleApiResponse<LotDTO>(LotDTO.toDto(repository.save(newLot))));
     }
 
     /* curl sample :
