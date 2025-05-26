@@ -23,17 +23,14 @@ public class LotDTO {
     private String status;
     private String ownerName;
     private UUID ownerId;
-    private List<String> tagNames;
+    private List<Tag> tags;
 
-    public List<String> getTagNames() {
-        return tagNames;
+    public List<Tag> getTags() {
+        return tags;
     }
 
-    public void setTagNames(List<Tag> tagNames) {
-        this.tagNames = new ArrayList<>();
-        for (Tag tag : tagNames) {
-            this.tagNames.add(tag.getLabel());
-        }
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     public UUID getOwnerId() {
@@ -144,7 +141,7 @@ public class LotDTO {
         dto.setCurrentPrice(lot.getCurrentPrice());
         dto.setCategory(lot.getCategory() != null ? lot.getCategory() : null);
         dto.setStatus(lot.getStatus() != null ? lot.getStatus().name() : null);
-        dto.setTagNames(lot.getTags());
+        dto.setTags(lot.getTags());
         dto.setOwnerName(lot.getOwner().getUsername());
         dto.setOwnerId(lot.getOwner().getId());
         return dto;
