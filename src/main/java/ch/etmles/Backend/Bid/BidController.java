@@ -4,7 +4,6 @@ import ch.etmles.Backend.Bid.DTO.BidDTO;
 import ch.etmles.Backend.Bid.Exceptions.BidNotFoundException;
 import ch.etmles.Backend.Lot.Exceptions.LotNotFoundException;
 import ch.etmles.Backend.Lot.LotService;
-import ch.etmles.Backend.Member.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

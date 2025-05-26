@@ -32,13 +32,15 @@ public class LotController {
     private final CategoryService categoryService;
     private final MemberService memberService;
     private final TagService tagService;
+    private final LotRepository lotRepository;
 
-    public LotController(LotRepository repository, LotService lotService, CategoryService categoryService, MemberService memberService, TagService tagService) {
+    public LotController(LotRepository repository, LotService lotService, CategoryService categoryService, MemberService memberService, TagService tagService, LotRepository lotRepository) {
         this.repository = repository;
         this.lotService = lotService;
         this.categoryService = categoryService;
         this.memberService = memberService;
         this.tagService = tagService;
+        this.lotRepository = lotRepository;
     }
 
     /* curl sample :
@@ -122,6 +124,19 @@ public class LotController {
                     newLot.setId(id);
                     return repository.save(newLot);
                 })));
+    }
+
+    @PostMapping("{id}/close")
+    ResponseEntity<String> closeLot(@PathVariable UUID id) {
+
+        if(lotRepository.findById(id).isEmpty())
+//            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Lot: " + id + " not found");
+            throw new LotNotFoundException(id);
+
+        if(lotService.closeLot(id))
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Lot closed");
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not able to close lot");
     }
 
     /* curl sample :
