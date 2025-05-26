@@ -9,7 +9,6 @@ import ch.etmles.Backend.Lot.*;
 import ch.etmles.Backend.Lot.DTO.LotDTO;
 import ch.etmles.Backend.Lot.Exceptions.LotIsOwnByCurrentMemberException;
 import ch.etmles.Backend.Member.DTO.MemberDTO;
-import ch.etmles.Backend.Member.Exceptions.MemberUnauthorizedAdvice;
 import ch.etmles.Backend.Member.Exceptions.MemberUnauthorizedException;
 import ch.etmles.Backend.SingleApiResponse;
 import org.springframework.data.domain.Page;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/me/")
+@RequestMapping("/me")
 public class MemberController {
 
     private final MemberRepository repository;
