@@ -44,7 +44,7 @@ public class LoadDatabase {
         List<Tag> gamingTags = new ArrayList<>();
         gamingTags.add(consoleTag);
         Member memberNo1 = new Member("Tartempion", "https://picsum.photos/id/103/200", new BigDecimal("15000"), new BigDecimal("0"), new ArrayList<>());
-        Member memberNo2 = new Member("Toutankhamon", "https://picsum.photos/id/64/200", new BigDecimal("250.45"), new BigDecimal("650"), new ArrayList<>());
+        Member memberNo2 = new Member("Toutankhamon", "https://picsum.photos/id/64/200", new BigDecimal("10000"), new BigDecimal("650"), new ArrayList<>());
 
         return args->{
             log.info("Preloading " + tagRepository.save(rareTag));
