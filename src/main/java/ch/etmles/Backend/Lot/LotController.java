@@ -91,7 +91,7 @@ public class LotController {
         newLot.setDescription(lot.getDescription());
         newLot.setStartPrice(lot.getStartPrice());
         newLot.setCurrentPrice(lot.getStartPrice());
-        newLot.setStartDate(LocalDateTime.now());
+        newLot.setStartDate(lot.getStartDate().isAfter(LocalDateTime.now()) ? lot.getStartDate() : LocalDateTime.now());
         newLot.setEndDate(lot.getEndDate());
         newLot.setCategory(categoryService.getCategoryFromId(lot.categoryId));
         newLot.setOwner(memberService.getCurrentMember());

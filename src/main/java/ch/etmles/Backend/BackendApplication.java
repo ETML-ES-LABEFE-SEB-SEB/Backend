@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootConfiguration
 @SpringBootApplication
 @EnableScheduling
-@ComponentScan(basePackages = "ch.etmles.Member.")
 public class BackendApplication {
 
 	public static void main(String[] args) {

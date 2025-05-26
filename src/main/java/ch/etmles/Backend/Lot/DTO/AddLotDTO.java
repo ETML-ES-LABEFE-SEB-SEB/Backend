@@ -9,6 +9,7 @@ public class AddLotDTO {
     public String name;
     public String description;
     public String pictureUrl;
+    public LocalDateTime startDate;
     public LocalDateTime endDate;
     public BigDecimal startPrice;
     public UUID categoryId;
@@ -37,6 +38,14 @@ public class AddLotDTO {
 
     public void setPictureUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 
     public LocalDateTime getEndDate() {
