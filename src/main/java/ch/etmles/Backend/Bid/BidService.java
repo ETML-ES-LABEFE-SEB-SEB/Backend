@@ -52,7 +52,7 @@ public class BidService {
         return bidder.orElse(null);
     }
 
-    public Member getHigherBidder(UUID lotId)
+    public Member getHighestBidder(UUID lotId)
     {
         // Lot exists ?
         Optional<Lot> lot = lotRepository.findById(lotId);
