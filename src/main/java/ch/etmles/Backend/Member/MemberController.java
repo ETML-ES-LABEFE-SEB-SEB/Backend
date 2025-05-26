@@ -92,7 +92,7 @@ public class MemberController {
         -d "{\"bidValue\": \"29.95\", \"bidDate\": \"12.05.2025\" }"
     */
     @PostMapping("bids")
-    ResponseEntity<Bid> newBidForLot(AddBidDTO bid) {
+    ResponseEntity<Bid> newBidForLot(@RequestBody AddBidDTO bid) {
 
         Lot lotToBidOn = lotService.getOpenLotById(UUID.fromString(bid.getLotId()));
 
@@ -109,6 +109,8 @@ public class MemberController {
         // Check validity of the bid (should be higher than the current best)
         if(bidService.checkBidValidity(newBid)) {
             bidRepository.save(newBid);
+            lotToBidOn.setCurrentPrice(bid.getAmount());
+            lotRepository.save(lotToBidOn);
 
             // Add bid value to the reserved wallet of the member
             memberService.moveToReservedWallet(newBid.getBidValue());
