@@ -91,11 +91,12 @@ public class LotController {
         newLot.setDescription(lot.getDescription());
         newLot.setStartPrice(lot.getStartPrice());
         newLot.setCurrentPrice(lot.getStartPrice());
-        newLot.setStartDate(lot.getStartDate().isAfter(LocalDateTime.now()) ? lot.getStartDate() : LocalDateTime.now());
+        newLot.setStartDate(lot.getStartDate().isAfter(LocalDateTime.now()) ? lot.getStartDate() : LocalDateTime.now()); // Don't allow Date < Now
         newLot.setEndDate(lot.getEndDate());
         newLot.setCategory(categoryService.getCategoryFromId(lot.categoryId));
         newLot.setOwner(memberService.getCurrentMember());
         newLot.setTags(tagService.getTagsFromString(lot.getTags()));
+        newLot.setStatus(LotStatus.ACTIVATED); // By default -> Activated
         return ResponseEntity.status(HttpStatus.CREATED).body(new SingleApiResponse<LotDTO>(LotDTO.toDto(repository.save(newLot))));
     }
 
