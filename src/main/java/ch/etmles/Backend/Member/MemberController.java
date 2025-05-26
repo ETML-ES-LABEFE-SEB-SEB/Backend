@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/me")
@@ -93,7 +94,7 @@ public class MemberController {
     @PostMapping("bids")
     ResponseEntity<Bid> newBidForLot(AddBidDTO bid) {
 
-        Lot lotToBidOn = lotService.getOpenLotById(bid.getLotId());
+        Lot lotToBidOn = lotService.getOpenLotById(UUID.fromString(bid.getLotId()));
 
         // Reject if currentUser owns the lot
         if(memberService.lotIsOwnByCurrentMember(lotToBidOn))

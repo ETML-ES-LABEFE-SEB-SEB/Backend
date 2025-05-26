@@ -7,15 +7,15 @@ import java.util.UUID;
 
 public class AddBidDTO {
 
-    private UUID lotId;
+    private String lotId;
     private BigDecimal amount;
 
-    public UUID getLotId() {
+    public String getLotId() {
         return lotId;
     }
 
     public void setLotId(UUID lotId) {
-        this.lotId = lotId;
+        this.lotId = lotId.toString();
     }
 
     public BigDecimal getAmount() {

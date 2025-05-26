@@ -40,10 +40,10 @@ public class LotService {
         Lot lot = lotRepository.findById(lotId)
                 .orElseThrow(() -> new LotNotFoundException(lotId));
 
-//        if(lot.getStatus() == LotStatus.ACTIVATED)
-        return lot;
+        if(lot.getStatus() == LotStatus.ACTIVATED)
+            return lot;
 
-//        throw new LotNotOpenedException(lotId);
+        throw new LotNotOpenedException(lotId);
     }
 
     @Transactional
