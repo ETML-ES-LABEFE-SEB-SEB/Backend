@@ -17,15 +17,11 @@ import java.util.UUID;
 public class BidController {
 
     private final BidRepository repository;
-    private final BidService bidService;
     private final LotService lotService;
-    private final MemberService memberService;
 
-    public BidController(BidRepository bidRepository, BidService bidService, LotService lotService, MemberService memberService) {
+    public BidController(BidRepository bidRepository, LotService lotService) {
         this.repository = bidRepository;
-        this.bidService = bidService;
         this.lotService = lotService;
-        this.memberService = memberService;
     }
 
     /* curl sample :

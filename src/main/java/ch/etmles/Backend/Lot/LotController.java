@@ -50,13 +50,13 @@ public class LotController {
         Pageable pageable = PageRequest.of(page - 1, 12, Sort.by(Sort.Direction.ASC, "endDate"));
 
         if (categoryId == null)
-            return new ListApiResponse<LotDTO>(repository.findAll(pageable).map(LotDTO::toDto));
+            return new ListApiResponse<LotDTO>(repository.findByStatus(LotStatus.ACTIVATED, pageable).map(LotDTO::toDto));
 
         List<Category> categories = categoryService.getCategoryChainFromId(categoryId);
         if (categories.isEmpty())
             throw new CategoryNotFoundException(categoryId);
 
-        return new ListApiResponse<LotDTO>(repository.findByCategoryIn(categories, pageable).map(LotDTO::toDto));
+        return new ListApiResponse<LotDTO>(repository.findByStatusAndCategoryIn(LotStatus.ACTIVATED, categories, pageable).map(LotDTO::toDto));
     }
 
     /* curl sample :
