@@ -88,6 +88,8 @@ public class LotController {
     @PostMapping("")
     ResponseEntity<SingleApiResponse<LotDTO>> newLot(@RequestBody AddLotDTO lot) {
         Lot newLot = new Lot();
+        newLot.setName(lot.getName());
+        newLot.setPictureUrl("https://picsum.photos/id/2/600/400");
         newLot.setDescription(lot.getDescription());
         newLot.setStartPrice(lot.getStartPrice());
         newLot.setCurrentPrice(lot.getStartPrice());
