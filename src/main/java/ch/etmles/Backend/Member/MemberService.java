@@ -3,6 +3,8 @@ package ch.etmles.Backend.Member;
 import ch.etmles.Backend.Lot.Lot;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class MemberService {
 
@@ -20,5 +22,27 @@ public class MemberService {
     public boolean lotIsOwnByCurrentMember(Lot lot) {
         Member currentMember = getCurrentMember();
         return lot.getOwner().getId().equals(currentMember.getId());
+    }
+
+    public boolean moveToReservedWallet(BigDecimal amount) {
+        Member currentMember = getCurrentMember();
+        if(currentMember.getAvailableWallet().compareTo(amount) > 0) {
+            currentMember.setAvailableWallet(currentMember.getAvailableWallet().subtract(amount));
+            currentMember.setReservedWallet(currentMember.getReservedWallet().add(amount));
+            memberRepository.save(currentMember);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean moveToAvailableWallet(BigDecimal amount) {
+        Member currentMember = getCurrentMember();
+        if(currentMember.getReservedWallet().compareTo(amount) > 0) {
+            currentMember.setAvailableWallet(currentMember.getAvailableWallet().add(amount));
+            currentMember.setReservedWallet(currentMember.getReservedWallet().subtract(amount));
+            memberRepository.save(currentMember);
+            return true;
+        }
+        return false;
     }
 }

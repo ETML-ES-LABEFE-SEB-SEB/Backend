@@ -15,11 +15,17 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Category> getCategoryFromId(UUID categoryId)
+    public List<Category> getCategoryChainFromId(UUID categoryId)
     {
         Optional<Category> category = categoryRepository.findById(categoryId);
         List<Category> childCategories = categoryRepository.findCategoriesByParent(category.get());
         childCategories.add(category.get());
         return childCategories;
+    }
+
+    public Category getCategoryFromId(UUID categoryId)
+    {
+        Optional<Category> category = categoryRepository.findById(categoryId);
+        return category.orElse(null);
     }
 }

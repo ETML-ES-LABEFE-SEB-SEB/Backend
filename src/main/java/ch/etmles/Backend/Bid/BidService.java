@@ -51,4 +51,24 @@ public class BidService {
         Optional<Member> bidder = memberRepository.findById(memberId);
         return bidder.orElse(null);
     }
+
+    public Member getHigherBidder(UUID lotId)
+    {
+        // Lot exists ?
+        Optional<Lot> lot = lotRepository.findById(lotId);
+        if(lot.isEmpty())
+            return null;
+
+        // Nothing to do, the lot is already closed or paused
+        if(lot.get().getStatus() != LotStatus.ACTIVATED)
+            return null;
+
+        Optional<Bid> highest = lot.get().getBids().stream().max(Comparator.comparing(Bid::getBidValue));
+
+        // No bidder for this lot
+        if(highest.isEmpty())
+            return null;
+
+        return highest.get().getOwner();
+    }
 }

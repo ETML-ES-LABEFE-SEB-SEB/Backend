@@ -109,6 +109,10 @@ public class MemberController {
         // Check validity of the bid (should be higher than the current best)
         if(bidService.checkBidValidity(newBid)) {
             bidRepository.save(newBid);
+
+            // Add bid value to the reserved wallet of the member
+            memberService.moveToReservedWallet(newBid.getBidValue());
+            
             return new ResponseEntity<>(newBid, HttpStatus.CREATED);
         } else {
             throw new BidTooLowException(lotToBidOn.getId());
