@@ -18,6 +18,11 @@ public class ListApiResponse<T> {
         this.pagination = new PaginationInfo(page);
     }
 
+    public ListApiResponse(List<T> content, PaginationInfo pagination) {
+        this.content = content;
+        this.pagination = pagination;
+    }
+
     public List<T> getContent() {
         return content;
     }
@@ -39,6 +44,14 @@ public class ListApiResponse<T> {
             this.totalElements = page.getTotalElements();
             this.totalPages = page.getTotalPages();
             this.last = page.isLast();
+        }
+
+        public PaginationInfo(int page, int size, long totalElements, int totalPages, boolean last) {
+            this.page = page;
+            this.size = size;
+            this.totalElements = totalElements;
+            this.totalPages = totalPages;
+            this.last = last;
         }
 
         public int getPage() { return page; }

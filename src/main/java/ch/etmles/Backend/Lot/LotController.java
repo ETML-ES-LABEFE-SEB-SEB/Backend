@@ -5,6 +5,7 @@ import ch.etmles.Backend.ListApiResponse;
 import ch.etmles.Backend.Lot.DTO.AddLotDTO;
 import ch.etmles.Backend.Lot.DTO.LotDTO;
 import ch.etmles.Backend.Lot.Exceptions.LotNotFoundException;
+import ch.etmles.Backend.Lot.Exceptions.OrderByNotFoundException;
 import ch.etmles.Backend.LotCategory.Category;
 import ch.etmles.Backend.LotCategory.Exceptions.CategoryNotFoundException;
 import ch.etmles.Backend.LotCategory.CategoryService;
@@ -18,10 +19,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static ch.etmles.Backend.apiVersion.API_VERSION;
 
@@ -49,18 +50,60 @@ public class LotController {
     curl -i localhost:8080/lots
     */
     @GetMapping("")
-    ListApiResponse<LotDTO> getLots(@RequestParam(defaultValue = "") UUID categoryId, @RequestParam(defaultValue = "1") int page) {
+    ListApiResponse<LotDTO> getLots(
+            @RequestParam(required = false) SortOptions orderBy,
+            @RequestParam(defaultValue = "") UUID categoryId,
+            @RequestParam(defaultValue = "") String name,
+            @RequestParam(defaultValue = "0") double minPrice,
+            @RequestParam(defaultValue = "0") double maxPrice,
+            @RequestParam(defaultValue = "1") int page) {
+
         if (page < 1) page = 1;
-        Pageable pageable = PageRequest.of(page - 1, 12, Sort.by(Sort.Direction.ASC, "endDate"));
+        int pageSize = 12;
 
-        if (categoryId == null)
-            return new ListApiResponse<LotDTO>(repository.findByStatus(LotStatus.ACTIVATED, pageable).map(LotDTO::toDto));
+        List<Lot> lots = repository.findByStatus(LotStatus.ACTIVATED);
 
-        List<Category> categories = categoryService.getCategoryChainFromId(categoryId);
-        if (categories.isEmpty())
-            throw new CategoryNotFoundException(categoryId);
+        // Filter category
+        if(categoryId != null)
+            lots = lots.stream().filter(lot -> lot.getCategory().getId().equals(categoryId)).toList();
 
-        return new ListApiResponse<LotDTO>(repository.findByStatusAndCategoryIn(LotStatus.ACTIVATED, categories, pageable).map(LotDTO::toDto));
+        // Filter name
+        if(!name.isBlank())
+            lots = lots.stream().filter(lot -> lot.getName().toLowerCase().contains(name.toLowerCase())).toList();
+
+        // Min and max current price
+        if(minPrice >= 0)
+            lots = lots.stream().filter(lot -> lot.getCurrentPrice().doubleValue() >= minPrice).toList();
+        if(maxPrice > 0)
+            lots = lots.stream().filter(lot -> lot.getCurrentPrice().doubleValue() <= maxPrice).toList();
+
+
+        // Sort by
+        if(orderBy != null)
+            switch (orderBy) {
+                case NAME_ASC -> lots = lots.stream().sorted(Comparator.comparing(Lot::getName)).toList();
+                case NAME_DESC -> lots = lots.stream().sorted(Comparator.comparing(Lot::getName).reversed()).toList();
+                case POSTED_AT -> lots = lots.stream().sorted(Comparator.comparing(Lot::getStartDate)).toList();
+                case FINISH_AT -> lots = lots.stream().sorted(Comparator.comparing(Lot::getEndDate)).toList();
+                case PRICE_ASC -> lots = lots.stream().sorted(Comparator.comparing(Lot::getCurrentPrice)).toList();
+                case PRICE_DESC -> lots = lots.stream().sorted(Comparator.comparing(Lot::getCurrentPrice).reversed()).toList();
+                default -> throw new OrderByNotFoundException(orderBy.toString());
+            }
+        else
+            lots = lots.stream().sorted(Comparator.comparing(Lot::getEndDate)).toList();
+
+        // Pagination Infos
+        int totalElements = lots.size();
+        int totalPages = (int)Math.ceil(lots.size() / pageSize);
+        boolean isLastPage = totalPages == page;
+
+
+        // Paginated
+        int fromIndex = Math.max(0, (page - 1) * pageSize);
+        int toIndex = Math.min(fromIndex + pageSize, lots.size());
+        List<LotDTO> pagedLots = fromIndex >= toIndex ? List.of() : lots.subList(fromIndex, toIndex).stream().map(LotDTO::toDto).toList();
+
+        return new ListApiResponse<>(pagedLots, new ListApiResponse.PaginationInfo(page, pageSize, totalElements, totalPages, isLastPage));
     }
 
     /* curl sample :
@@ -80,6 +123,14 @@ public class LotController {
     @GetMapping("{id}/history")
     ListApiResponse<BidDTO> history(@PathVariable UUID id) {
         return new ListApiResponse<BidDTO>(lotService.getBidsForLot(id));
+    }
+
+    @GetMapping("sort-options")
+    ListApiResponse<String> sortOptions() {
+        List<String> options = Arrays.stream(SortOptions.values())
+                .map(Enum::name)
+                .toList();
+        return new ListApiResponse<>(options);
     }
 
     /* curl sample :
