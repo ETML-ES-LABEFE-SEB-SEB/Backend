@@ -76,6 +76,21 @@ Go to http://localhost:8080/swagger-ui/index.html to test the API.
     └───Exceptions
 ```
 
+## Docs
+
+### Class diagram
+
+<img src="docs/class_diagram.png">
+
+### Use case diagram
+
+<object data="docs/UseCaseDiagram.pdf" type="application/pdf">
+    <embed src="docs/UseCaseDiagram.pdf">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="http://yoursite.com/the.pdf">Download PDF</a>.</p>
+    </embed>
+</object>
+
+
 ## Collaborate
 
   * [How to commit](https://www.conventionalcommits.org/en/v1.0.0/)
