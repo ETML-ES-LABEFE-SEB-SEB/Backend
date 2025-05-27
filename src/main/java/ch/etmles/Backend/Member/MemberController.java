@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static ch.etmles.Backend.apiVersion.API_VERSION;
+
 @RestController
-@RequestMapping("/me")
+@RequestMapping("/" + API_VERSION + "/me")
 public class MemberController {
 
     private final MemberRepository repository;

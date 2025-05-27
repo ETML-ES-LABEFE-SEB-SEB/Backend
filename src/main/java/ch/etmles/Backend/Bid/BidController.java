@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+import static ch.etmles.Backend.apiVersion.API_VERSION;
+
 @RestController
-@RequestMapping("/bids")
+@RequestMapping("/" + API_VERSION + "/bids")
 public class BidController {
 
     private final BidRepository repository;

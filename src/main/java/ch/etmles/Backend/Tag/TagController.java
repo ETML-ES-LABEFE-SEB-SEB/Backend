@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static ch.etmles.Backend.apiVersion.API_VERSION;
+
 @RestController
-@RequestMapping("/tags")
+@RequestMapping("/" + API_VERSION + "/tags")
 public class TagController {
 
     private final TagRepository repository;
