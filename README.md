@@ -84,9 +84,9 @@ Go to http://localhost:8080/swagger-ui/index.html to test the API.
 
 ### Use case diagram
 
-<object data="docs/UseCaseDiagram.pdf" type="application/pdf">
-    <embed src="docs/UseCaseDiagram.pdf">
-        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="http://yoursite.com/the.pdf">Download PDF</a>.</p>
+<object data="https://github.com/ETML-ES-LABEFE-SEB-SEB/Backend/blob/develop/docs/UseCaseDiagram.pdf" type="application/pdf">
+    <embed src="https://github.com/ETML-ES-LABEFE-SEB-SEB/Backend/blob/develop/docs/UseCaseDiagram.pdf">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://github.com/ETML-ES-LABEFE-SEB-SEB/Backend/blob/develop/docs/UseCaseDiagram.pdf">Download PDF</a>.</p>
     </embed>
 </object>
 
