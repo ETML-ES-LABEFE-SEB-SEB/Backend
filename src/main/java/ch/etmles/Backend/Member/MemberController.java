@@ -4,7 +4,7 @@ import ch.etmles.Backend.Bid.*;
 import ch.etmles.Backend.Bid.DTO.AddBidDTO;
 import ch.etmles.Backend.Bid.DTO.BidDTO;
 import ch.etmles.Backend.Bid.Exceptions.BidTooLowException;
-import ch.etmles.Backend.ListApiResponse;
+import ch.etmles.Backend.PageApiResponse;
 import ch.etmles.Backend.Lot.*;
 import ch.etmles.Backend.Lot.DTO.LotDTO;
 import ch.etmles.Backend.Lot.Exceptions.LotIsOwnByCurrentMemberException;
@@ -59,7 +59,7 @@ public class MemberController {
     curl -i localhost:8080/me/bids
     */
     @GetMapping("bids")
-    ListApiResponse<BidDTO> getMemberBids(@RequestParam(defaultValue = "1") int page) {
+    PageApiResponse<BidDTO> getMemberBids(@RequestParam(defaultValue = "1") int page) {
         if(page < 1) page = 1;
 
         Member currentUser = memberService.getCurrentMember();
@@ -70,14 +70,14 @@ public class MemberController {
             currentUser,
             PageRequest.of(page-1, 12, Sort.by(Sort.Direction.DESC, "bidDate"))
         );
-        return new ListApiResponse<>(currentUserBids.map(BidDTO::toDto));
+        return new PageApiResponse<>(currentUserBids.map(BidDTO::toDto));
     }
 
     /* curl sample :
     curl -i localhost:8080/me/lots
     */
     @GetMapping("lots")
-    ListApiResponse<LotDTO> getMemberLots(@RequestParam(defaultValue = "1") int page) {
+    PageApiResponse<LotDTO> getMemberLots(@RequestParam(defaultValue = "1") int page) {
         if(page < 1) page = 1;
 
         Member currentUser = memberService.getCurrentMember();
@@ -86,7 +86,7 @@ public class MemberController {
             PageRequest.of(page-1, 12, Sort.by(Sort.Direction.DESC, "endDate"))
         );
 
-        return new ListApiResponse<>(currentUserLots.map(LotDTO::toDto));
+        return new PageApiResponse<>(currentUserLots.map(LotDTO::toDto));
     }
 
     /* curl sample :

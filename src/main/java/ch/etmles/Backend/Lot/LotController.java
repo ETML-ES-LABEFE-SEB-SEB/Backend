@@ -2,27 +2,21 @@ package ch.etmles.Backend.Lot;
 
 import ch.etmles.Backend.Bid.DTO.BidDTO;
 import ch.etmles.Backend.ListApiResponse;
+import ch.etmles.Backend.PageApiResponse;
 import ch.etmles.Backend.Lot.DTO.AddLotDTO;
 import ch.etmles.Backend.Lot.DTO.LotDTO;
 import ch.etmles.Backend.Lot.Exceptions.LotNotFoundException;
 import ch.etmles.Backend.Lot.Exceptions.OrderByNotFoundException;
-import ch.etmles.Backend.LotCategory.Category;
-import ch.etmles.Backend.LotCategory.Exceptions.CategoryNotFoundException;
 import ch.etmles.Backend.LotCategory.CategoryService;
 import ch.etmles.Backend.Member.MemberService;
 import ch.etmles.Backend.SingleApiResponse;
 import ch.etmles.Backend.Tag.TagService;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static ch.etmles.Backend.apiVersion.API_VERSION;
 
@@ -50,7 +44,7 @@ public class LotController {
     curl -i localhost:8080/lots
     */
     @GetMapping("")
-    ListApiResponse<LotDTO> getLots(
+    PageApiResponse<LotDTO> getLots(
             @RequestParam(required = false) SortOptions orderBy,
             @RequestParam(defaultValue = "") UUID categoryId,
             @RequestParam(defaultValue = "") String name,
@@ -103,7 +97,7 @@ public class LotController {
         int toIndex = Math.min(fromIndex + pageSize, lots.size());
         List<LotDTO> pagedLots = fromIndex >= toIndex ? List.of() : lots.subList(fromIndex, toIndex).stream().map(LotDTO::toDto).toList();
 
-        return new ListApiResponse<>(pagedLots, new ListApiResponse.PaginationInfo(page, pageSize, totalElements, totalPages, isLastPage));
+        return new PageApiResponse<>(pagedLots, new PageApiResponse.PaginationInfo(page, pageSize, totalElements, totalPages, isLastPage));
     }
 
     /* curl sample :
@@ -121,8 +115,8 @@ public class LotController {
     curl -i localhost:8080/lots/1
     */
     @GetMapping("{id}/history")
-    ListApiResponse<BidDTO> history(@PathVariable UUID id) {
-        return new ListApiResponse<BidDTO>(lotService.getBidsForLot(id));
+    PageApiResponse<BidDTO> history(@PathVariable UUID id) {
+        return new PageApiResponse<BidDTO>(lotService.getBidsForLot(id));
     }
 
     @GetMapping("sort-options")
