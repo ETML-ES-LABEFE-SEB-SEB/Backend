@@ -1,7 +1,34 @@
-# Backend
-This repository contains the Backend of the application.
+# Backend-LABEFE
 
-## First build
+## Description
+
+This project is designed to facilitate online auctions where users can bid on various items in real time.
+
+The main features are:
+
+- User authentication and profile management, allowing users to securely log in, and manage their auction activity.
+- Item listing system, enabling sellers to create detailed auction listings with picture, descriptions, and starting prices.
+- Real-time bidding, allowing multiple users to place bids and see updates on the current highest offer.
+- Auction timer and automatic winner selection, which closes the auction at the predefined time and notifies the winning bidder.
+
+## Getting Started
+
+### Prerequisites
+
+List all dependencies and their version needed by the project as :
+
+* DataBase Engine (S2)
+* IDE used (IntelliJ)
+* OS supported (Windows 10/11, Linux x64)
+* Virtualization (.JDK, .JRE)
+
+### Configuration
+
+Currently, setup with H2, no configuration needed.
+
+## Deployment
+
+### On dev environment
 
 After cloning this repository, run this command:
 
@@ -23,6 +50,41 @@ to retrieve the dependencies, compile and run the program for the first time.
   [...]
 ```
 
-## Test using http requests
-
 Go to http://localhost:8080/swagger-ui/index.html to test the API.
+
+### On integration environment
+
+/
+
+## Directory structure
+
+```shell
+├───Bid
+│   ├───DTO
+│   └───Exceptions
+├───Lot
+│   ├───DTO
+│   └───Exceptions
+├───LotCategory
+│   ├───DTO
+│   └───Exceptions
+├───Member
+│   ├───DTO
+│   └───Exceptions
+└───Tag
+    ├───DTO
+    └───Exceptions
+```
+
+## Collaborate
+
+  * [How to commit](https://www.conventionalcommits.org/en/v1.0.0/)
+  * [How to use your workflow](https://nvie.com/posts/a-successful-git-branching-model/)
+
+## License
+
+* [GPL3](LICENSE).
+
+## Contact
+
+Create an issue on this repository.
