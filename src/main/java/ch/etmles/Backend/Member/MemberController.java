@@ -9,6 +9,7 @@ import ch.etmles.Backend.Lot.*;
 import ch.etmles.Backend.Lot.DTO.LotDTO;
 import ch.etmles.Backend.Lot.Exceptions.LotIsOwnByCurrentMemberException;
 import ch.etmles.Backend.Member.DTO.MemberDTO;
+import ch.etmles.Backend.Member.Exceptions.MemberInsufficientFundsException;
 import ch.etmles.Backend.Member.Exceptions.MemberUnauthorizedException;
 import ch.etmles.Backend.SingleApiResponse;
 import org.springframework.data.domain.Page;
@@ -21,8 +22,10 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static ch.etmles.Backend.apiVersion.API_VERSION;
+
 @RestController
-@RequestMapping("/me")
+@RequestMapping("/" + API_VERSION + "/me")
 public class MemberController {
 
     private final MemberRepository repository;
@@ -105,6 +108,9 @@ public class MemberController {
         newBid.setOwner(memberService.getCurrentMember());
         newBid.setBidValue(bid.getAmount());
         newBid.setBidDate(LocalDateTime.now());
+
+        if(!memberService.memberHasAvailableWallet(bid.getAmount()))
+            throw new MemberInsufficientFundsException(memberService.getCurrentMember().getId());
 
         // Check validity of the bid (should be higher than the current best)
         if(bidService.checkBidValidity(newBid)) {

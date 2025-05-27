@@ -23,8 +23,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static ch.etmles.Backend.apiVersion.API_VERSION;
+
 @RestController
-@RequestMapping("/lots")
+@RequestMapping("/" + API_VERSION + "/lots")
 public class LotController {
 
     private final LotRepository repository;

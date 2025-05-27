@@ -19,6 +19,13 @@ public class MemberService {
         return memberRepository.findByUsername("Tartempion");
     }
 
+    public boolean memberHasAvailableWallet(BigDecimal requiredAmount) {
+        Member currentMember = getCurrentMember();
+        if(requiredAmount.compareTo(currentMember.getAvailableWallet()) <= 0)
+            return true;
+        return false;
+    }
+
     public boolean lotIsOwnByCurrentMember(Lot lot) {
         Member currentMember = getCurrentMember();
         return lot.getOwner().getId().equals(currentMember.getId());

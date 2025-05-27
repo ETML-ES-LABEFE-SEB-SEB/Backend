@@ -2,6 +2,7 @@ package ch.etmles.Backend.Lot.DTO;
 
 import ch.etmles.Backend.Lot.Lot;
 import ch.etmles.Backend.LotCategory.Category;
+import ch.etmles.Backend.Member.DTO.SummaryMemberDTO;
 import ch.etmles.Backend.Tag.Tag;
 
 import java.math.BigDecimal;
@@ -21,8 +22,7 @@ public class LotDTO {
     private BigDecimal currentPrice;
     private Category category;
     private String status;
-    private String ownerName;
-    private UUID ownerId;
+    private SummaryMemberDTO owner;
     private List<Tag> tags;
 
     public List<Tag> getTags() {
@@ -33,12 +33,12 @@ public class LotDTO {
         this.tags = tags;
     }
 
-    public UUID getOwnerId() {
-        return ownerId;
+    public SummaryMemberDTO getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(UUID ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(SummaryMemberDTO owner) {
+        this.owner = owner;
     }
 
     public String getStatus() {
@@ -121,14 +121,6 @@ public class LotDTO {
         this.category = category;
     }
 
-    public String getOwnerName() {
-        return ownerName;
-    }
-
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
-    }
-
     public static LotDTO toDto(Lot lot) {
         LotDTO dto = new LotDTO();
         dto.setId(lot.getId());
@@ -142,8 +134,7 @@ public class LotDTO {
         dto.setCategory(lot.getCategory() != null ? lot.getCategory() : null);
         dto.setStatus(lot.getStatus() != null ? lot.getStatus().name() : null);
         dto.setTags(lot.getTags());
-        dto.setOwnerName(lot.getOwner().getUsername());
-        dto.setOwnerId(lot.getOwner().getId());
+        dto.setOwner(SummaryMemberDTO.toDTO(lot.getOwner()));
         return dto;
     }
 }

@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static ch.etmles.Backend.apiVersion.API_VERSION;
+
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/" + API_VERSION + "/categories")
 public class CategoryController {
 
     private final CategoryRepository repository;
