@@ -1,6 +1,6 @@
 package ch.etmles.Backend.Tag;
 
-import ch.etmles.Backend.ListApiResponse;
+import ch.etmles.Backend.PageApiResponse;
 import ch.etmles.Backend.SingleApiResponse;
 import ch.etmles.Backend.Tag.DTO.TagDTO;
 import ch.etmles.Backend.Tag.Exceptions.TagNotFoundException;
@@ -29,12 +29,12 @@ public class TagController {
     curl -i localhost:8080/tags
     */
     @GetMapping("")
-    ListApiResponse<TagDTO> all() {
+    PageApiResponse<TagDTO> all() {
         List<Tag> tags = repository.findAll();
         List<TagDTO> tagDTOs = new ArrayList<>();
         for (Tag tag : tags)
             tagDTOs.add(TagDTO.toDto(tag));
-        return new ListApiResponse<TagDTO>(tagDTOs);
+        return new PageApiResponse<TagDTO>(tagDTOs);
     }
 
     /* curl sample :

@@ -16,6 +16,7 @@ public interface LotRepository extends JpaRepository<Lot, UUID> {
 
     Page<Lot> findByOwner(Member currentUser, PageRequest endDate);
     Page<Lot> findByStatus(LotStatus status, Pageable pageable);
+    List<Lot> findByStatus(LotStatus status);
     Page<Lot> findByCategoryIn(List<Category> categories, Pageable pageable);
     Page<Lot> findByStatusAndCategoryIn(LotStatus status, List<Category> categories, Pageable pageable);
 

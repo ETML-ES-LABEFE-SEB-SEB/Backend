@@ -1,6 +1,6 @@
 package ch.etmles.Backend.LotCategory;
 
-import ch.etmles.Backend.ListApiResponse;
+import ch.etmles.Backend.PageApiResponse;
 import ch.etmles.Backend.LotCategory.DTO.CategoryDTO;
 import ch.etmles.Backend.LotCategory.Exceptions.CategoryNotFoundException;
 import ch.etmles.Backend.SingleApiResponse;
@@ -28,12 +28,12 @@ public class CategoryController {
     curl -i localhost:8080/categories
     */
     @GetMapping("")
-    ListApiResponse<CategoryDTO> all() {
+    PageApiResponse<CategoryDTO> all() {
         List<CategoryDTO> categoryDTOs = new ArrayList<>();
         List<Category> categories = repository.findAll();
         for(Category category : categories)
             categoryDTOs.add(CategoryDTO.toDTO(category));
-        return new ListApiResponse<CategoryDTO>(categoryDTOs);
+        return new PageApiResponse<CategoryDTO>(categoryDTOs);
     }
 
     /* curl sample :
