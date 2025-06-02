@@ -1,9 +1,9 @@
 package ch.etmles.Backend.LotCategory;
 
-import ch.etmles.Backend.PageApiResponse;
+import ch.etmles.Backend.ResponseAPI.ListPageApiResponse;
 import ch.etmles.Backend.LotCategory.DTO.CategoryDTO;
 import ch.etmles.Backend.LotCategory.Exceptions.CategoryNotFoundException;
-import ch.etmles.Backend.SingleApiResponse;
+import ch.etmles.Backend.ResponseAPI.SingleApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +28,12 @@ public class CategoryController {
     curl -i localhost:8080/categories
     */
     @GetMapping("")
-    PageApiResponse<CategoryDTO> all() {
+    ListPageApiResponse<CategoryDTO> all() {
         List<CategoryDTO> categoryDTOs = new ArrayList<>();
         List<Category> categories = repository.findAll();
         for(Category category : categories)
             categoryDTOs.add(CategoryDTO.toDTO(category));
-        return new PageApiResponse<CategoryDTO>(categoryDTOs);
+        return new ListPageApiResponse<CategoryDTO>(categoryDTOs);
     }
 
     /* curl sample :

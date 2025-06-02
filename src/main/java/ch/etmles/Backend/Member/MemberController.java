@@ -4,14 +4,14 @@ import ch.etmles.Backend.Bid.*;
 import ch.etmles.Backend.Bid.DTO.AddBidDTO;
 import ch.etmles.Backend.Bid.DTO.BidDTO;
 import ch.etmles.Backend.Bid.Exceptions.BidTooLowException;
-import ch.etmles.Backend.PageApiResponse;
+import ch.etmles.Backend.ResponseAPI.ListPageApiResponse;
 import ch.etmles.Backend.Lot.*;
 import ch.etmles.Backend.Lot.DTO.LotDTO;
 import ch.etmles.Backend.Lot.Exceptions.LotIsOwnByCurrentMemberException;
 import ch.etmles.Backend.Member.DTO.MemberDTO;
 import ch.etmles.Backend.Member.Exceptions.MemberInsufficientFundsException;
 import ch.etmles.Backend.Member.Exceptions.MemberUnauthorizedException;
-import ch.etmles.Backend.SingleApiResponse;
+import ch.etmles.Backend.ResponseAPI.SingleApiResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -59,7 +59,7 @@ public class MemberController {
     curl -i localhost:8080/me/bids
     */
     @GetMapping("bids")
-    PageApiResponse<BidDTO> getMemberBids(@RequestParam(defaultValue = "1") int page) {
+    ListPageApiResponse<BidDTO> getMemberBids(@RequestParam(defaultValue = "1") int page) {
         if(page < 1) page = 1;
 
         Member currentUser = memberService.getCurrentMember();
@@ -70,14 +70,14 @@ public class MemberController {
             currentUser,
             PageRequest.of(page-1, 12, Sort.by(Sort.Direction.DESC, "bidDate"))
         );
-        return new PageApiResponse<>(currentUserBids.map(BidDTO::toDto));
+        return new ListPageApiResponse<>(currentUserBids.map(BidDTO::toDto));
     }
 
     /* curl sample :
     curl -i localhost:8080/me/lots
     */
     @GetMapping("lots")
-    PageApiResponse<LotDTO> getMemberLots(@RequestParam(defaultValue = "1") int page) {
+    ListPageApiResponse<LotDTO> getMemberLots(@RequestParam(defaultValue = "1") int page) {
         if(page < 1) page = 1;
 
         Member currentUser = memberService.getCurrentMember();
@@ -86,7 +86,7 @@ public class MemberController {
             PageRequest.of(page-1, 12, Sort.by(Sort.Direction.DESC, "endDate"))
         );
 
-        return new PageApiResponse<>(currentUserLots.map(LotDTO::toDto));
+        return new ListPageApiResponse<>(currentUserLots.map(LotDTO::toDto));
     }
 
     /* curl sample :

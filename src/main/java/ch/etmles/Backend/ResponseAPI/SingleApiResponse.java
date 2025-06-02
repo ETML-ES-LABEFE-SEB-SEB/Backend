@@ -1,4 +1,4 @@
-package ch.etmles.Backend;
+package ch.etmles.Backend.ResponseAPI;
 
 public class SingleApiResponse<T> {
 
