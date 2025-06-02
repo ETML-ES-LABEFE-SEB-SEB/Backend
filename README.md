@@ -87,6 +87,11 @@ Go to http://localhost:8080/swagger-ui/index.html to test the API.
     └───Exceptions
 ```
 
+### Tools
+To visualize and manage the content of the AWS S3 server, a GUI tool can help.
+
+You can use : https://s3browser.com/
+
 ## Docs
 
 ### Class diagram
