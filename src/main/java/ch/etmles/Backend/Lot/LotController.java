@@ -30,14 +30,16 @@ public class LotController {
     private final MemberService memberService;
     private final TagService tagService;
     private final LotRepository lotRepository;
+    private final AwsS3Service awsS3Service;
 
-    public LotController(LotRepository repository, LotService lotService, CategoryService categoryService, MemberService memberService, TagService tagService, LotRepository lotRepository) {
+    public LotController(LotRepository repository, LotService lotService, CategoryService categoryService, MemberService memberService, TagService tagService, LotRepository lotRepository, AwsS3Service awsS3Service) {
         this.repository = repository;
         this.lotService = lotService;
         this.categoryService = categoryService;
         this.memberService = memberService;
         this.tagService = tagService;
         this.lotRepository = lotRepository;
+        this.awsS3Service = awsS3Service;
     }
 
     /* curl sample :
@@ -134,6 +136,10 @@ public class LotController {
     */
     @PostMapping("")
     ResponseEntity<SingleApiResponse<LotDTO>> newLot(@RequestBody AddLotDTO lot) {
+
+        // Upload picture
+
+
         Lot newLot = new Lot();
         newLot.setName(lot.getName());
         newLot.setPictureUrl("https://picsum.photos/id/2/600/400");

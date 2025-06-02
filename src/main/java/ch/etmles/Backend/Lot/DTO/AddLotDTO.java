@@ -1,5 +1,7 @@
 package ch.etmles.Backend.Lot.DTO;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.UUID;
 public class AddLotDTO {
     public String name;
     public String description;
-    public String pictureUrl;
+    public MultipartFile pictureContent;
     public LocalDateTime startDate;
     public LocalDateTime endDate;
     public BigDecimal startPrice;
@@ -32,12 +34,12 @@ public class AddLotDTO {
         this.description = description;
     }
 
-    public String getPictureUrl() {
-        return pictureUrl;
+    public MultipartFile getPictureContent() {
+        return pictureContent;
     }
 
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
+    public void setPictureContent(MultipartFile pictureContent) {
+        this.pictureContent = pictureContent;
     }
 
     public LocalDateTime getStartDate() {
