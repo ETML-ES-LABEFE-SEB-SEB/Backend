@@ -163,7 +163,6 @@ public class LotController {
             newLot.setPictureUrl(awsS3Service.saveFileToBucket(convertedPicture));
         }
 
-
         newLot.setName(lot.getName());
         newLot.setDescription(lot.getDescription());
         newLot.setStartPrice(lot.getStartPrice());
