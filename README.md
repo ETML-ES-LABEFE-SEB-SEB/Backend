@@ -30,6 +30,17 @@ Currently, setup with H2, no configuration needed.
 
 ### On dev environment
 
+Install AWS CLI : https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+
+Add AWS credentials. To do so execute the following command :
+```terminaloutput
+> aws configure
+AWS Access Key ID [****************HQV7]: <ACCESS KEY>
+AWS Secret Access Key [****************PXZj]: <SECRET KEY>
+Default region name [None]: us-east-1
+Default output format [None]: json
+```
+
 After cloning this repository, run this command:
 
 ```
@@ -75,6 +86,11 @@ Go to http://localhost:8080/swagger-ui/index.html to test the API.
     ├───DTO
     └───Exceptions
 ```
+
+### Tools
+To visualize and manage the content of the AWS S3 server, a GUI tool can help.
+
+You can use : https://s3browser.com/
 
 ## Docs
 

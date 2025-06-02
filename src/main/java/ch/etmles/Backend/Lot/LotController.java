@@ -1,5 +1,6 @@
 package ch.etmles.Backend.Lot;
 
+import ch.etmles.Backend.Base64DecodedMultipartFile;
 import ch.etmles.Backend.Bid.DTO.BidDTO;
 import ch.etmles.Backend.ResponseAPI.*;
 import ch.etmles.Backend.Lot.DTO.LotSearchDTO;
@@ -15,6 +16,7 @@ import ch.etmles.Backend.Tag.TagService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -31,14 +33,16 @@ public class LotController {
     private final MemberService memberService;
     private final TagService tagService;
     private final LotRepository lotRepository;
+    private final AwsS3Service awsS3Service;
 
-    public LotController(LotRepository repository, LotService lotService, CategoryService categoryService, MemberService memberService, TagService tagService, LotRepository lotRepository) {
+    public LotController(LotRepository repository, LotService lotService, CategoryService categoryService, MemberService memberService, TagService tagService, LotRepository lotRepository, AwsS3Service awsS3Service) {
         this.repository = repository;
         this.lotService = lotService;
         this.categoryService = categoryService;
         this.memberService = memberService;
         this.tagService = tagService;
         this.lotRepository = lotRepository;
+        this.awsS3Service = awsS3Service;
     }
 
     /* curl sample :
@@ -141,9 +145,25 @@ public class LotController {
     */
     @PostMapping("")
     ResponseEntity<SingleApiResponse<LotDTO>> newLot(@RequestBody AddLotDTO lot) {
+
         Lot newLot = new Lot();
+
+        // Upload picture
+        if(lot.pictureContent.isEmpty())
+            newLot.setPictureUrl("https://s3.us-east-1.amazonaws.com/projlabefe.sebseb/no_picture.png");
+        else
+        {
+            String[] parts = lot.pictureContent.split(",");
+            String metadata = parts[0];
+            String base64Data = parts[1];
+            String contentType = metadata.substring(metadata.indexOf(":") + 1, metadata.indexOf(";"));
+            byte[] decoded = Base64.getDecoder().decode(base64Data);
+            MultipartFile convertedPicture = new Base64DecodedMultipartFile(decoded, contentType);
+
+            newLot.setPictureUrl(awsS3Service.saveFileToBucket(convertedPicture));
+        }
+
         newLot.setName(lot.getName());
-        newLot.setPictureUrl("https://picsum.photos/id/2/600/400");
         newLot.setDescription(lot.getDescription());
         newLot.setStartPrice(lot.getStartPrice());
         newLot.setCurrentPrice(lot.getStartPrice());
