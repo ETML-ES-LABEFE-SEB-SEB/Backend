@@ -1,5 +1,6 @@
 package ch.etmles.Backend.LotCategory;
 
+import ch.etmles.Backend.LotCategory.DTO.SummaryCategoryDTO;
 import ch.etmles.Backend.ResponseAPI.ListPageApiResponse;
 import ch.etmles.Backend.LotCategory.DTO.CategoryDTO;
 import ch.etmles.Backend.LotCategory.Exceptions.CategoryNotFoundException;
@@ -24,10 +25,21 @@ public class CategoryController {
         this.repository = categoryRepository;
     }
 
+    @GetMapping
+    ListPageApiResponse<SummaryCategoryDTO> getCategories()
+    {
+        List<SummaryCategoryDTO> summaryCategories = new ArrayList<>();
+        List<Category> categories = repository.findAll();
+        for (Category category : categories) {
+            summaryCategories.add(SummaryCategoryDTO.toDTO(category));
+        }
+        return new ListPageApiResponse<SummaryCategoryDTO>(summaryCategories);
+    }
+
     /* curl sample :
-    curl -i localhost:8080/categories
+    curl -i localhost:8080/categories/breadcrumb
     */
-    @GetMapping("")
+    @GetMapping("breadcrumb")
     ListPageApiResponse<CategoryDTO> all() {
         List<CategoryDTO> categoryDTOs = new ArrayList<>();
         List<Category> categories = repository.findAll();
