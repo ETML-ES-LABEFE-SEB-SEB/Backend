@@ -8,13 +8,13 @@ public class CategoryDTO {
 
     private UUID id;
     private String name;
-    private String parent;
+    private Category parent;
 
-    public String getParent() {
+    public Category getParent() {
         return parent;
     }
 
-    public void setParent(String parent) {
+    public void setParent(Category parent) {
         this.parent = parent;
     }
 
@@ -38,7 +38,7 @@ public class CategoryDTO {
         CategoryDTO dto = new CategoryDTO();
         dto.setId(category.getId());
         dto.setName(category.getName());
-        dto.setParent(category.getParent() == null ? "" : category.getParent().getName());
+        dto.setParent(category.getParent());
         return dto;
     }
 }

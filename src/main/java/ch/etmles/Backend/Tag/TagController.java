@@ -1,7 +1,7 @@
 package ch.etmles.Backend.Tag;
 
-import ch.etmles.Backend.PageApiResponse;
-import ch.etmles.Backend.SingleApiResponse;
+import ch.etmles.Backend.ResponseAPI.ListPageApiResponse;
+import ch.etmles.Backend.ResponseAPI.SingleApiResponse;
 import ch.etmles.Backend.Tag.DTO.TagDTO;
 import ch.etmles.Backend.Tag.Exceptions.TagNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,12 +29,12 @@ public class TagController {
     curl -i localhost:8080/tags
     */
     @GetMapping("")
-    PageApiResponse<TagDTO> all() {
+    ListPageApiResponse<TagDTO> all() {
         List<Tag> tags = repository.findAll();
         List<TagDTO> tagDTOs = new ArrayList<>();
         for (Tag tag : tags)
             tagDTOs.add(TagDTO.toDto(tag));
-        return new PageApiResponse<TagDTO>(tagDTOs);
+        return new ListPageApiResponse<TagDTO>(tagDTOs);
     }
 
     /* curl sample :
