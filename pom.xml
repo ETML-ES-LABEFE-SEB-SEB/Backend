@@ -57,6 +57,12 @@
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+			<version>2.31.54</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
