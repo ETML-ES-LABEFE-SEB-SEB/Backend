@@ -52,7 +52,7 @@ public class LotController {
     SinglePageApiResponse<LotSearchDTO> getLots(
             @RequestParam(required = false) SortOptions orderBy,
             @RequestParam(defaultValue = "") UUID categoryId,
-            @RequestParam(defaultValue = "") String name,
+            @RequestParam(defaultValue = "") String search,
             @RequestParam(defaultValue = "0") double minPrice,
             @RequestParam(defaultValue = "0") double maxPrice,
             @RequestParam(defaultValue = "1") int page) {
@@ -67,8 +67,8 @@ public class LotController {
             lots = lots.stream().filter(lot -> lot.getCategory().getId().equals(categoryId)).toList();
 
         // Filter name
-        if(!name.isBlank())
-            lots = lots.stream().filter(lot -> lot.getName().toLowerCase().contains(name.toLowerCase())).toList();
+        if(!search.isBlank())
+            lots = lots.stream().filter(lot -> lot.getName().toLowerCase().contains(search.toLowerCase())).toList();
 
         // Min and max current price
         if(minPrice >= 0)
