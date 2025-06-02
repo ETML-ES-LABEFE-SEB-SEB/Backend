@@ -15,6 +15,7 @@ import java.util.UUID;
 @Service
 public class AwsS3Service {
 
+    private String baseUrl = "https://s3.us-east-1.amazonaws.com/";
     private S3Client s3client;
     private String bucket = "projlabefe.sebseb";
 
@@ -25,16 +26,17 @@ public class AwsS3Service {
     }
 
     public String saveFileToBucket(MultipartFile file){
-        String key = UUID.randomUUID() + "-" + file.getOriginalFilename();
+        String key = UUID.randomUUID() + "-" + file.getName();
         try {
 
             PutObjectRequest request = PutObjectRequest.builder()
                     .bucket(bucket)
                     .key(key)
+                    .contentType(file.getContentType())
                     .build();
             s3client.putObject(request, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
 
-            return key;
+            return baseUrl + "/" + bucket + "/" + key;
         }
         catch (Exception e) {
             throw new RuntimeException("Failed to upload the picture to S3", e);

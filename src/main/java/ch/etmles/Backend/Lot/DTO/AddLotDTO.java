@@ -10,7 +10,7 @@ import java.util.UUID;
 public class AddLotDTO {
     public String name;
     public String description;
-    public MultipartFile pictureContent;
+    public String pictureContent;
     public LocalDateTime startDate;
     public LocalDateTime endDate;
     public BigDecimal startPrice;
@@ -34,11 +34,11 @@ public class AddLotDTO {
         this.description = description;
     }
 
-    public MultipartFile getPictureContent() {
+    public String getPictureContent() {
         return pictureContent;
     }
 
-    public void setPictureContent(MultipartFile pictureContent) {
+    public void setPictureContent(String pictureContent) {
         this.pictureContent = pictureContent;
     }
 
