@@ -51,7 +51,7 @@ public class LotController {
     */
     @GetMapping("")
     SinglePageApiResponse<LotSearchDTO> getLots(
-            @RequestParam(required = false) SortOptions orderBy,
+            @RequestParam(required = false) SortOptions orderById,
             @RequestParam(defaultValue = "") UUID categoryId,
             @RequestParam(defaultValue = "") String search,
             @RequestParam(defaultValue = "0") double minPrice,
@@ -64,10 +64,27 @@ public class LotController {
         List<Lot> lots = repository.findByStatus(LotStatus.ACTIVATED);
 
         // Filter category
-        if(categoryId != null){
-            Category category = categoryService.getCategoryFromId(categoryId);
-            // TODO :
-            lots = lots.stream().filter(lot -> lot.getCategory().getId().equals(categoryId)).toList();
+        if(categoryId != null) {
+
+            List<Lot> categoryLots = new ArrayList<>();
+
+            // Current category
+            categoryLots.addAll(lots.stream().filter(lot -> lot.getCategory().getId().equals(categoryId)).toList());
+            Category current = categoryService.getCategoryFromId(categoryId);
+
+            // Parents categories
+            Category currentParent = current == null ? null : current.getParent();
+            while (currentParent != null) {
+                UUID currentCategoryId = currentParent.getId();
+                List<Lot> tempCategoryLots = lots.stream()
+                        .filter(lot -> lot.getCategory().getId().equals(currentCategoryId))
+                        .toList();
+
+                categoryLots.addAll(tempCategoryLots);
+                currentParent = currentParent.getParent();
+            }
+
+            lots = categoryLots;
         }
 
         // Filter name
@@ -82,15 +99,15 @@ public class LotController {
 
 
         // Sort by
-        if(orderBy != null)
-            switch (orderBy) {
+        if(orderById != null)
+            switch (orderById) {
                 case NAME_ASC -> lots = lots.stream().sorted(Comparator.comparing(Lot::getName)).toList();
                 case NAME_DESC -> lots = lots.stream().sorted(Comparator.comparing(Lot::getName).reversed()).toList();
                 case POSTED_AT -> lots = lots.stream().sorted(Comparator.comparing(Lot::getStartDate)).toList();
                 case FINISH_AT -> lots = lots.stream().sorted(Comparator.comparing(Lot::getEndDate)).toList();
                 case PRICE_ASC -> lots = lots.stream().sorted(Comparator.comparing(Lot::getCurrentPrice)).toList();
                 case PRICE_DESC -> lots = lots.stream().sorted(Comparator.comparing(Lot::getCurrentPrice).reversed()).toList();
-                default -> throw new OrderByNotFoundException(orderBy.toString());
+                default -> throw new OrderByNotFoundException(orderById.toString());
             }
         else
             lots = lots.stream().sorted(Comparator.comparing(Lot::getEndDate)).toList();
