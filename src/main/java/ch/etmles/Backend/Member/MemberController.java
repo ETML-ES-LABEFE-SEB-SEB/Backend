@@ -28,15 +28,15 @@ import static ch.etmles.Backend.apiVersion.API_VERSION;
 @RequestMapping("/" + API_VERSION + "/me")
 public class MemberController {
 
-    private final MemberRepository repository;
+    private final MemberRepository memberRepository;
     private final MemberService memberService;
     private final LotRepository lotRepository;
     private final BidRepository bidRepository;
     private final BidService bidService;
     private final LotService lotService;
 
-    public MemberController(MemberRepository repository, MemberService memberService, LotRepository lotRepository, BidRepository bidRepository, BidService bidService, LotService lotService) {
-        this.repository = repository;
+    public MemberController(MemberRepository memberRepository, MemberService memberService, LotRepository lotRepository, BidRepository bidRepository, BidService bidService, LotService lotService) {
+        this.memberRepository = memberRepository;
         this.memberService = memberService;
         this.lotRepository = lotRepository;
         this.bidRepository = bidRepository;
