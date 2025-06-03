@@ -2,6 +2,7 @@ package ch.etmles.Backend.Lot;
 
 import ch.etmles.Backend.Base64DecodedMultipartFile;
 import ch.etmles.Backend.Bid.DTO.BidDTO;
+import ch.etmles.Backend.Lot.DTO.SortOptionDTO;
 import ch.etmles.Backend.ResponseAPI.*;
 import ch.etmles.Backend.Lot.DTO.LotSearchDTO;
 import ch.etmles.Backend.LotCategory.Category;
@@ -63,8 +64,11 @@ public class LotController {
         List<Lot> lots = repository.findByStatus(LotStatus.ACTIVATED);
 
         // Filter category
-        if(categoryId != null)
+        if(categoryId != null){
+            Category category = categoryService.getCategoryFromId(categoryId);
+            // TODO :
             lots = lots.stream().filter(lot -> lot.getCategory().getId().equals(categoryId)).toList();
+        }
 
         // Filter name
         if(!search.isBlank())
@@ -131,9 +135,9 @@ public class LotController {
     }
 
     @GetMapping("sort-options")
-    ListApiResponse<String> sortOptions() {
-        List<String> options = Arrays.stream(SortOptions.values())
-                .map(Enum::name)
+    public ListApiResponse<SortOptionDTO> sortOptions() {
+        List<SortOptionDTO> options = Arrays.stream(SortOptions.values())
+                .map(opt -> new SortOptionDTO(opt.name(), opt.getLabel()))
                 .toList();
         return new ListApiResponse<>(options);
     }
