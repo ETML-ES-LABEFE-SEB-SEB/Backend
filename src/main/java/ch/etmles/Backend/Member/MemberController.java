@@ -4,6 +4,7 @@ import ch.etmles.Backend.Bid.*;
 import ch.etmles.Backend.Bid.DTO.AddBidDTO;
 import ch.etmles.Backend.Bid.DTO.BidDTO;
 import ch.etmles.Backend.Bid.Exceptions.BidTooLowException;
+import ch.etmles.Backend.Lot.DTO.FollowsLotsDTO;
 import ch.etmles.Backend.ResponseAPI.ListPageApiResponse;
 import ch.etmles.Backend.Lot.*;
 import ch.etmles.Backend.Lot.DTO.LotDTO;
@@ -20,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static ch.etmles.Backend.apiVersion.API_VERSION;
@@ -53,6 +56,16 @@ public class MemberController {
         if(currentUser != null)
             return new SingleApiResponse<>(MemberDTO.toDTO(currentUser));
         throw new MemberUnauthorizedException();
+    }
+
+    @GetMapping("follows")
+    SingleApiResponse<FollowsLotsDTO> getFollowsLots() {
+
+        Member currentUser = memberService.getCurrentMember();
+
+        FollowsLotsDTO followsLots = lotService.getFollowLots(currentUser);
+
+        return new SingleApiResponse<>(followsLots);
     }
 
     /* curl sample :

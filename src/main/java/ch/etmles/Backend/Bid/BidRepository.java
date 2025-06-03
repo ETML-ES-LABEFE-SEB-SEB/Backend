@@ -12,6 +12,6 @@ import java.util.UUID;
 public interface BidRepository extends JpaRepository<Bid, UUID> {
 
     List<Bid> findByBidUpLot(Lot lot);
-
+    List<Bid> findByOwner(Member owner);
     Page<Bid> findByOwner(Member owner, Pageable pageable);
 }
