@@ -4,6 +4,8 @@ import ch.etmles.Backend.Bid.Bid;
 import ch.etmles.Backend.Bid.BidService;
 import ch.etmles.Backend.Bid.DTO.BidDTO;
 import ch.etmles.Backend.Bid.BidRepository;
+import ch.etmles.Backend.Lot.DTO.FollowsLotsDTO;
+import ch.etmles.Backend.Lot.DTO.LotDTO;
 import ch.etmles.Backend.Lot.Exceptions.LotNotFoundException;
 import ch.etmles.Backend.Lot.Exceptions.LotNotOpenedException;
 import ch.etmles.Backend.LotCategory.CategoryRepository;
@@ -13,10 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class LotService {
@@ -86,5 +85,41 @@ public class LotService {
         }
 
         return false;
+    }
+
+    public FollowsLotsDTO getFollowLots(Member member)
+    {
+        FollowsLotsDTO followsLotsDTO = new FollowsLotsDTO();
+
+        List<Bid> memberBids = bidRepository.findByOwner(member);
+        List<Lot> ownedLots = lotRepository.findByOwner(member);
+
+        // Active lot with bid from the member
+        for(Bid bid : memberBids)
+            if(bid.getBidUpLot().getStatus() == LotStatus.ACTIVATED)
+                followsLotsDTO.getBidsOnLots().add(LotDTO.toDto(bid.getBidUpLot()));
+
+        // Lot that have been bought or sold by the member
+        for(Bid bid : memberBids)
+            if(bid.getBidUpLot().getStatus() == LotStatus.FINISHED){
+                Bid winner = bid.getBidUpLot().getBids().stream().max(Comparator.comparing(Bid::getBidValue)).orElse(null);
+                if(winner != null && winner.getOwner().equals(member))
+                    followsLotsDTO.getBoughtLots().add(LotDTO.toDto(bid.getBidUpLot()));
+            }
+
+        // Active lot that the member owns
+        for(Lot lot : ownedLots)
+            if(lot.getStatus() == LotStatus.ACTIVATED)
+                followsLotsDTO.getMineLots().add(LotDTO.toDto(lot));
+
+        // Lot that have been sold or unsold by the member
+        for(Lot lot : ownedLots)
+            if(lot.getStatus() == LotStatus.FINISHED)
+                followsLotsDTO.getSoldAndUnsold().add(LotDTO.toDto(lot));
+
+
+
+
+        return followsLotsDTO;
     }
 }
