@@ -51,7 +51,7 @@ public class LotController {
     */
     @GetMapping("")
     SinglePageApiResponse<LotSearchDTO> getLots(
-            @RequestParam(required = false) SortOptions orderBy,
+            @RequestParam(required = false) SortOptions orderById,
             @RequestParam(defaultValue = "") UUID categoryId,
             @RequestParam(defaultValue = "") String search,
             @RequestParam(defaultValue = "0") double minPrice,
@@ -82,15 +82,15 @@ public class LotController {
 
 
         // Sort by
-        if(orderBy != null)
-            switch (orderBy) {
+        if(orderById != null)
+            switch (orderById) {
                 case NAME_ASC -> lots = lots.stream().sorted(Comparator.comparing(Lot::getName)).toList();
                 case NAME_DESC -> lots = lots.stream().sorted(Comparator.comparing(Lot::getName).reversed()).toList();
                 case POSTED_AT -> lots = lots.stream().sorted(Comparator.comparing(Lot::getStartDate)).toList();
                 case FINISH_AT -> lots = lots.stream().sorted(Comparator.comparing(Lot::getEndDate)).toList();
                 case PRICE_ASC -> lots = lots.stream().sorted(Comparator.comparing(Lot::getCurrentPrice)).toList();
                 case PRICE_DESC -> lots = lots.stream().sorted(Comparator.comparing(Lot::getCurrentPrice).reversed()).toList();
-                default -> throw new OrderByNotFoundException(orderBy.toString());
+                default -> throw new OrderByNotFoundException(orderById.toString());
             }
         else
             lots = lots.stream().sorted(Comparator.comparing(Lot::getEndDate)).toList();
