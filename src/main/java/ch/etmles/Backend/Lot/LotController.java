@@ -64,10 +64,27 @@ public class LotController {
         List<Lot> lots = repository.findByStatus(LotStatus.ACTIVATED);
 
         // Filter category
-        if(categoryId != null){
-            Category category = categoryService.getCategoryFromId(categoryId);
-            // TODO :
-            lots = lots.stream().filter(lot -> lot.getCategory().getId().equals(categoryId)).toList();
+        if(categoryId != null) {
+
+            List<Lot> categoryLots = new ArrayList<>();
+
+            // Current category
+            categoryLots.addAll(lots.stream().filter(lot -> lot.getCategory().getId().equals(categoryId)).toList());
+            Category current = categoryService.getCategoryFromId(categoryId);
+
+            // Parents categories
+            Category currentParent = current == null ? null : current.getParent();
+            while (currentParent != null) {
+                UUID currentCategoryId = currentParent.getId();
+                List<Lot> tempCategoryLots = lots.stream()
+                        .filter(lot -> lot.getCategory().getId().equals(currentCategoryId))
+                        .toList();
+
+                categoryLots.addAll(tempCategoryLots);
+                currentParent = currentParent.getParent();
+            }
+
+            lots = categoryLots;
         }
 
         // Filter name
