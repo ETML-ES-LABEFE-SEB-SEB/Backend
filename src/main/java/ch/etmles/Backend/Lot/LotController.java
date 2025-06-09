@@ -3,6 +3,7 @@ package ch.etmles.Backend.Lot;
 import ch.etmles.Backend.Base64DecodedMultipartFile;
 import ch.etmles.Backend.Bid.DTO.BidDTO;
 import ch.etmles.Backend.Lot.DTO.SortOptionDTO;
+import ch.etmles.Backend.LotCategory.CategoryRepository;
 import ch.etmles.Backend.ResponseAPI.*;
 import ch.etmles.Backend.Lot.DTO.LotSearchDTO;
 import ch.etmles.Backend.LotCategory.Category;
@@ -35,8 +36,9 @@ public class LotController {
     private final TagService tagService;
     private final LotRepository lotRepository;
     private final AwsS3Service awsS3Service;
+    private final CategoryRepository categoryRepository;
 
-    public LotController(LotRepository repository, LotService lotService, CategoryService categoryService, MemberService memberService, TagService tagService, LotRepository lotRepository, AwsS3Service awsS3Service) {
+    public LotController(LotRepository repository, LotService lotService, CategoryService categoryService, MemberService memberService, TagService tagService, LotRepository lotRepository, AwsS3Service awsS3Service, CategoryRepository categoryRepository) {
         this.repository = repository;
         this.lotService = lotService;
         this.categoryService = categoryService;
@@ -44,6 +46,7 @@ public class LotController {
         this.tagService = tagService;
         this.lotRepository = lotRepository;
         this.awsS3Service = awsS3Service;
+        this.categoryRepository = categoryRepository;
     }
 
     /* curl sample :
@@ -71,17 +74,16 @@ public class LotController {
             // Current category
             categoryLots.addAll(lots.stream().filter(lot -> lot.getCategory().getId().equals(categoryId)).toList());
             Category current = categoryService.getCategoryFromId(categoryId);
+            List<Category> childrenCategories = categoryRepository.findByParent(current);
 
-            // Parents categories
-            Category currentParent = current == null ? null : current.getParent();
-            while (currentParent != null) {
-                UUID currentCategoryId = currentParent.getId();
+            // Children categories
+            for(Category child : childrenCategories) {
+                UUID currentCategoryId = child.getId();
                 List<Lot> tempCategoryLots = lots.stream()
                         .filter(lot -> lot.getCategory().getId().equals(currentCategoryId))
                         .toList();
 
                 categoryLots.addAll(tempCategoryLots);
-                currentParent = currentParent.getParent();
             }
 
             lots = categoryLots;
