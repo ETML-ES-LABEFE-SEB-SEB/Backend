@@ -4,10 +4,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestControllerAdvice
-public class BidTooLowAdvice {
+public class BidNotValidAdvice {
 
     @ResponseBody
-    @ExceptionHandler(BidTooLowException.class)
+    @ExceptionHandler(BidNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String bidTooLowException(BidTooLowException ex) { return ex.getMessage(); }
+    String bidTooLowException(BidNotValidException ex) { return ex.getMessage(); }
 }

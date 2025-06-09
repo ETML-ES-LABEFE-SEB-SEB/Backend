@@ -31,6 +31,10 @@ public class BidService {
         if(!lotBids.isEmpty()){
             Bid highest = lotBids.getLast();
 
+            // newBid is owned by the same member ? Refuse the bid !
+            if(highest.getOwner().equals(bid.getOwner()))
+                return false;
+
             // newBid is higher than the current one, VALID !
             if(highest.getBidValue().compareTo(bid.getBidValue()) < 0) {
 
