@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 public class LotNotOpenedAdvice {
 
     @ResponseBody
-    @ExceptionHandler(LotNotFoundException.class)
+    @ExceptionHandler(LotNotOpenedException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     String lotNotFoundHandler(LotNotOpenedException ex) { return ex.getMessage(); }
 }
