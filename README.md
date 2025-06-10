@@ -94,18 +94,17 @@ You can use : https://s3browser.com/
 
 ## Docs
 
+### Use case diagram
+
+<img src="docs/usecase_diagram.png">
+
 ### Class diagram
 
 <img src="docs/class_diagram.png">
 
-### Use case diagram
+### MLD diagram
 
-<object data="https://github.com/ETML-ES-LABEFE-SEB-SEB/Backend/blob/develop/docs/UseCaseDiagram.pdf" type="application/pdf">
-    <embed src="https://github.com/ETML-ES-LABEFE-SEB-SEB/Backend/blob/develop/docs/UseCaseDiagram.pdf">
-        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://github.com/ETML-ES-LABEFE-SEB-SEB/Backend/blob/develop/docs/UseCaseDiagram.pdf">Download PDF</a>.</p>
-    </embed>
-</object>
-
+<img src="docs/mld_diagram.png">
 
 ## Collaborate
 
