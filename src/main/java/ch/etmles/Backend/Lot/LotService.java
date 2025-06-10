@@ -48,7 +48,7 @@ public class LotService {
     @Transactional
     public List<BidDTO> getBidsForLot(UUID lotId)
     {
-        Lot lot = getOpenLotById(lotId);
+        Lot lot = lotRepository.getLotById(lotId);
         List<Bid> bids = bidRepository.findByBidUpLot(lot);
         List<BidDTO> bidDTOs = new ArrayList<BidDTO>();
         for(Bid bid : bids)

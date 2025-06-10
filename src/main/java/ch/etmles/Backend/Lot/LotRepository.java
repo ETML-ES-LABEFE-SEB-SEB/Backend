@@ -27,4 +27,6 @@ public interface LotRepository extends JpaRepository<Lot, UUID> {
     List<Lot> getLotByStatus(LotStatus status);
 
     Collection<? extends Lot> findByOwnerAndStatus(Member owner, LotStatus status);
+
+    Lot getLotById(UUID id);
 }
