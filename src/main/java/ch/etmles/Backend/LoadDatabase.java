@@ -67,7 +67,7 @@ public class LoadDatabase {
             Member frangipanusMember = memberRepository.findByUsername("Frangipanus");
 
             Lot photoCamWithBids = new Lot("Appareil photo avec une enchère", "Bon appareil photo argentique, objectif en bon état. Très bien pour un rendu classique.", "https://picsum.photos/id/250/600/400", new BigDecimal("650"), LocalDateTime.now().minusDays(14).toString(), (LocalDateTime.now()).minusDays(7).toString(), reflexCategory, LotStatus.ACTIVATED, photoTags, owner);
-            photoCamWithBids.setCurrentPrice(BigDecimal.valueOf(660));
+            photoCamWithBids.setCurrentPrice(BigDecimal.valueOf(655));
             log.info("Preloading " + lotRepository.save(photoCamWithBids));
 
             log.info("Preloading " + bidRepository.save(new Bid(new BigDecimal("650"), LocalDateTime.now().minusDays(1), photoCamWithBids, connectedMember)));

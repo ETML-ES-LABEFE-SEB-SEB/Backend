@@ -1,5 +1,6 @@
 package ch.etmles.Backend.Lot;
 
+import ch.etmles.Backend.AwsS3Service;
 import ch.etmles.Backend.Base64DecodedMultipartFile;
 import ch.etmles.Backend.Bid.DTO.BidDTO;
 import ch.etmles.Backend.Lot.DTO.SortOptionDTO;
@@ -142,7 +143,8 @@ public class LotController {
         Optional<Lot> toFind = repository.findById(id);
         if(toFind.isEmpty())
             throw new LotNotFoundException(id);
-        return new SingleApiResponse<LotDTO>(LotDTO.toDto(toFind.get()));
+        else
+            return new SingleApiResponse<LotDTO>(LotDTO.toDto(toFind.get()));
     }
 
     /* curl sample :
