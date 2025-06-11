@@ -1,7 +1,7 @@
 package ch.etmles.Backend.Lot;
 
-import ch.etmles.Backend.AwsS3Service;
-import ch.etmles.Backend.Base64DecodedMultipartFile;
+import ch.etmles.Backend.Data.Services.AwsS3Service;
+import ch.etmles.Backend.Data.Base64DecodedMultipartFile;
 import ch.etmles.Backend.Bid.DTO.BidDTO;
 import ch.etmles.Backend.Lot.DTO.SortOptionDTO;
 import ch.etmles.Backend.LotCategory.CategoryRepository;
@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static ch.etmles.Backend.apiVersion.API_VERSION;
+import static ch.etmles.Backend.Data.apiVersion.API_VERSION;
 
 @RestController
 @RequestMapping("/" + API_VERSION + "/lots")

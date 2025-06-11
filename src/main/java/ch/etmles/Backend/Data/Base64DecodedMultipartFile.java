@@ -1,4 +1,4 @@
-package ch.etmles.Backend;
+package ch.etmles.Backend.Data;
 
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,4 +1,4 @@
-package ch.etmles.Backend;
+package ch.etmles.Backend.Data.Config;
 
 import ch.etmles.Backend.Auth.JwtFilter;
 import ch.etmles.Backend.Member.MemberService;
@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static ch.etmles.Backend.apiVersion.API_VERSION;
+import static ch.etmles.Backend.Data.apiVersion.API_VERSION;
 
 @Configuration
 @EnableMethodSecurity

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-import static ch.etmles.Backend.apiVersion.API_VERSION;
+import static ch.etmles.Backend.Data.apiVersion.API_VERSION;
 
 @RestController
 @RequestMapping("/" + API_VERSION + "/bids")

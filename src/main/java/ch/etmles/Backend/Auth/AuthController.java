@@ -8,7 +8,6 @@ import ch.etmles.Backend.Member.Member;
 import ch.etmles.Backend.Member.MemberRepository;
 import ch.etmles.Backend.Member.MemberRole;
 import ch.etmles.Backend.ResponseAPI.SingleApiResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import static ch.etmles.Backend.apiVersion.API_VERSION;
+import static ch.etmles.Backend.Data.apiVersion.API_VERSION;
 
 @RequestMapping("/" + API_VERSION + "/auth")
 @RestController
