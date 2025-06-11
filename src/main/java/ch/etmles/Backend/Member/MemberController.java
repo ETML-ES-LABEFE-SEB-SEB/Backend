@@ -5,6 +5,8 @@ import ch.etmles.Backend.Bid.DTO.AddBidDTO;
 import ch.etmles.Backend.Bid.DTO.BidDTO;
 import ch.etmles.Backend.Bid.Exceptions.BidNotValidException;
 import ch.etmles.Backend.Lot.DTO.FollowsLotsDTO;
+import ch.etmles.Backend.Member.DTO.MemberAddDTO;
+import ch.etmles.Backend.Member.Exceptions.MemberAlreadyExistsException;
 import ch.etmles.Backend.ResponseAPI.ListPageApiResponse;
 import ch.etmles.Backend.Lot.*;
 import ch.etmles.Backend.Lot.DTO.LotDTO;
@@ -18,9 +20,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static ch.etmles.Backend.apiVersion.API_VERSION;
@@ -35,14 +46,18 @@ public class MemberController {
     private final BidRepository bidRepository;
     private final BidService bidService;
     private final LotService lotService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
-    public MemberController(MemberRepository memberRepository, MemberService memberService, LotRepository lotRepository, BidRepository bidRepository, BidService bidService, LotService lotService) {
+    public MemberController(MemberRepository memberRepository, MemberService memberService, LotRepository lotRepository, BidRepository bidRepository, BidService bidService, LotService lotService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.memberRepository = memberRepository;
         this.memberService = memberService;
         this.lotRepository = lotRepository;
         this.bidRepository = bidRepository;
         this.bidService = bidService;
         this.lotService = lotService;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
     }
 
     /* curl sample :

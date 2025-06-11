@@ -1,12 +1,15 @@
 package ch.etmles.Backend.Member;
 
 import ch.etmles.Backend.Lot.Lot;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
 @Service
-public class MemberService {
+public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
 
@@ -14,9 +17,15 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
+    @Override
+    public Member loadUserByUsername(String username) throws UsernameNotFoundException {
+        return memberRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
     public Member getCurrentMember() {
         // TODO : This is for testing only !
-        return memberRepository.findByUsername("Tartempion");
+        return memberRepository.findByUsername("Tartempion").get();
     }
 
     public boolean memberHasAvailableWallet(BigDecimal requiredAmount) {

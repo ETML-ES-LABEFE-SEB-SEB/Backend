@@ -9,6 +9,7 @@ import ch.etmles.Backend.LotCategory.Category;
 import ch.etmles.Backend.LotCategory.CategoryRepository;
 import ch.etmles.Backend.Member.Member;
 import ch.etmles.Backend.Member.MemberRepository;
+import ch.etmles.Backend.Member.MemberService;
 import ch.etmles.Backend.Tag.Tag;
 import ch.etmles.Backend.Tag.TagRepository;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -26,7 +28,7 @@ public class LoadDatabase {
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
     @Bean
-    CommandLineRunner initDatabase(LotRepository lotRepository, CategoryRepository categoryRepository, TagRepository tagRepository, MemberRepository memberRepository, BidRepository bidRepository){
+    CommandLineRunner initDatabase(LotRepository lotRepository, CategoryRepository categoryRepository, TagRepository tagRepository, MemberRepository memberRepository, BidRepository bidRepository, MemberService memberService, PasswordEncoder passwordEncoder){
         Category parentCategory = new Category("Musique", null);
         Category childCategory = new Category("Guitare", parentCategory);
         Category carCategory = new Category("Voiture", null);
@@ -43,9 +45,9 @@ public class LoadDatabase {
         photoTags.add(rareTag);
         List<Tag> gamingTags = new ArrayList<>();
         gamingTags.add(consoleTag);
-        Member memberNo1 = new Member("Tartempion", "https://picsum.photos/id/103/200", new BigDecimal("1000"), new BigDecimal("650"), new ArrayList<>());
-        Member memberNo2 = new Member("Toutankhamon", "https://picsum.photos/id/64/200", new BigDecimal("5000"), new BigDecimal("0"), new ArrayList<>());
-        Member memberNo3 = new Member("Frangipanus", "https://picsum.photos/id/28/200", new BigDecimal("1200"), new BigDecimal("655"), new ArrayList<>());
+        Member memberNo1 = new Member("Tartempion", passwordEncoder.encode("test"), "https://picsum.photos/id/103/200", new BigDecimal("1000"), new BigDecimal("650"), new ArrayList<>());
+        Member memberNo2 = new Member("Toutankhamon", passwordEncoder.encode("test"), "https://picsum.photos/id/64/200", new BigDecimal("5000"), new BigDecimal("0"), new ArrayList<>());
+        Member memberNo3 = new Member("Frangipanus", passwordEncoder.encode("test"), "https://picsum.photos/id/28/200", new BigDecimal("1200"), new BigDecimal("655"), new ArrayList<>());
 
         return args->{
             log.info("Preloading " + tagRepository.save(rareTag));
@@ -62,9 +64,9 @@ public class LoadDatabase {
             log.info("Preloading " + memberRepository.save(memberNo2));
             log.info("Preloading " + memberRepository.save(memberNo3));
 
-            Member connectedMember = memberRepository.findByUsername("Tartempion");
-            Member owner = memberRepository.findByUsername("Toutankhamon");
-            Member frangipanusMember = memberRepository.findByUsername("Frangipanus");
+            Member connectedMember = memberRepository.findByUsername("Tartempion").get();
+            Member owner = memberRepository.findByUsername("Toutankhamon").get();
+            Member frangipanusMember = memberRepository.findByUsername("Frangipanus").get();
 
             Lot photoCamWithBids = new Lot("Appareil photo avec une enchère", "Bon appareil photo argentique, objectif en bon état. Très bien pour un rendu classique.", "https://picsum.photos/id/250/600/400", new BigDecimal("650"), LocalDateTime.now().minusDays(14).toString(), (LocalDateTime.now()).minusDays(7).toString(), reflexCategory, LotStatus.ACTIVATED, photoTags, owner);
             photoCamWithBids.setCurrentPrice(BigDecimal.valueOf(655));
