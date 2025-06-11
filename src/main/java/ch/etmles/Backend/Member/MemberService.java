@@ -1,6 +1,10 @@
 package ch.etmles.Backend.Member;
 
 import ch.etmles.Backend.Lot.Lot;
+import ch.etmles.Backend.Member.Exceptions.MemberNotFoundException;
+import ch.etmles.Backend.Member.Exceptions.MemberUnauthorizedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,8 +28,16 @@ public class MemberService implements UserDetailsService {
     }
 
     public Member getCurrentMember() {
-        // TODO : This is for testing only !
-        return memberRepository.findByUsername("Tartempion").get();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+            throw new MemberUnauthorizedException();
+        }
+
+        String username = authentication.getName();
+
+        return memberRepository.findByUsername(username)
+                .orElseThrow(() -> new MemberNotFoundException(username));
     }
 
     public boolean memberHasAvailableWallet(BigDecimal requiredAmount) {
