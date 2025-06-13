@@ -94,14 +94,20 @@ public class LotService {
         List<Bid> memberBids = bidRepository.findByOwner(member);
         List<Lot> ownedLots = lotRepository.findByOwner(member);
 
+        // make sure only distinct results
+        Set<UUID> addedBidLotIds = new HashSet<>();
+        Set<UUID> addedFinishedLotIds = new HashSet<>();
+        Set<UUID> addedMineLotIds = new HashSet<>();
+        Set<UUID> addedSoldLotIds = new HashSet<>();
+
         // Active lot with bid from the member
         for(Bid bid : memberBids)
-            if(bid.getBidUpLot().getStatus() == LotStatus.ACTIVATED)
+            if(bid.getBidUpLot().getStatus() == LotStatus.ACTIVATED && addedBidLotIds.add(bid.getBidUpLot().getId()))
                 followsLotsDTO.getBidsOnLots().add(LotDTO.toDto(bid.getBidUpLot()));
 
-        // Lot that have been bought or sold by the member
+        // Lot that have been bought by the member
         for(Bid bid : memberBids)
-            if(bid.getBidUpLot().getStatus() == LotStatus.FINISHED){
+            if(bid.getBidUpLot().getStatus() == LotStatus.FINISHED && addedFinishedLotIds.add(bid.getBidUpLot().getId())){
                 Bid winner = bid.getBidUpLot().getBids().stream().max(Comparator.comparing(Bid::getBidValue)).orElse(null);
                 if(winner != null && winner.getOwner().equals(member))
                     followsLotsDTO.getBoughtLots().add(LotDTO.toDto(bid.getBidUpLot()));
@@ -109,12 +115,12 @@ public class LotService {
 
         // Active lot that the member owns
         for(Lot lot : ownedLots)
-            if(lot.getStatus() == LotStatus.ACTIVATED)
+            if(lot.getStatus() == LotStatus.ACTIVATED && addedMineLotIds.add(lot.getId()))
                 followsLotsDTO.getMineLots().add(LotDTO.toDto(lot));
 
         // Lot that have been sold or unsold by the member
         for(Lot lot : ownedLots)
-            if(lot.getStatus() == LotStatus.FINISHED)
+            if(lot.getStatus() == LotStatus.FINISHED && addedSoldLotIds.add(lot.getId()))
                 followsLotsDTO.getSoldAndUnsold().add(LotDTO.toDto(lot));
 
 
