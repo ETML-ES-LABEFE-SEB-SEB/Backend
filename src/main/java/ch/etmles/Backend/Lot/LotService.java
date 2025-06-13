@@ -73,7 +73,7 @@ public class LotService {
 
             // Remove the reserved amount from the bidder wallet
             if(highestBidder != null) {
-                highestBidder.setReservedWallet(highestBidder.getReservedWallet().subtract(lot.get().getCurrentPrice()));
+                highestBidder.setReservedWallet(highestBidder.getReservedWallet().add(lot.get().getCurrentPrice()));
                 memberRepository.save(highestBidder);
             }
 
@@ -122,9 +122,6 @@ public class LotService {
         for(Lot lot : ownedLots)
             if(lot.getStatus() == LotStatus.FINISHED && addedSoldLotIds.add(lot.getId()))
                 followsLotsDTO.getSoldAndUnsold().add(LotDTO.toDto(lot));
-
-
-
 
         return followsLotsDTO;
     }
