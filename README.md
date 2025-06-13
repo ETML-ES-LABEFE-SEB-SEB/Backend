@@ -30,6 +30,18 @@ Currently, setup with H2, no configuration needed.
 
 ### On dev environment
 
+### Setup AWS
+Copy the *.env.example* file to *.env*.
+
+Set up the AWS S3 credentials in the *.env* file
+```
+AWS_ACCESS_KEY_ID=your-access-key
+AWS_SECRET_ACCESS_KEY=your-secret-key
+```
+
+### AWS CLI (alternative)
+Instead, you can also use AWS CLI:
+
 Install AWS CLI : https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 
 Add AWS credentials. To do so execute the following command :
@@ -41,8 +53,8 @@ Default region name [None]: us-east-1
 Default output format [None]: json
 ```
 
-After cloning this repository, run this command:
-
+## Start the app
+run this command:
 ```
    mvn clean spring-boot:run
 ```

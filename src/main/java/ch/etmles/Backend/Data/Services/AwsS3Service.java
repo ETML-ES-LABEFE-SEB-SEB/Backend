@@ -1,13 +1,17 @@
 package ch.etmles.Backend.Data.Services;
 
+import ch.etmles.Backend.Data.Config.AwsConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.io.File;
 import java.util.UUID;
 
 @Service
@@ -19,10 +23,14 @@ public class AwsS3Service {
 
     private static final Logger logger = LoggerFactory.getLogger(AwsS3Service.class);
 
-    public AwsS3Service() {
+    public AwsS3Service(AwsConfig awsConfig) {
 
-        // It takes the default credentials in ~/.aws/credentials
-        s3client = S3Client.builder().build();
+        AwsCredentialsProvider provider = awsConfig.getAwsCredentials();
+
+        s3client = S3Client.builder()
+                .credentialsProvider(provider)
+                .region(Region.of("us-east-1"))
+                .build();
     }
 
     public String saveFileToBucket(MultipartFile file){
