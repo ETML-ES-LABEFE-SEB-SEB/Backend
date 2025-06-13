@@ -27,14 +27,23 @@ public class JwtUtil {
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
+        try{
+            return claimsResolver.apply(claims);
+        } catch (Exception e){
+            return null;
+        }
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody();
+        try{
+            return Jwts.parser()
+                    .setSigningKey(SECRET_KEY)
+                    .parseClaimsJws(token)
+                    .getBody();
+        }
+        catch(Exception e){
+            return null;
+        }
     }
 
     private boolean isTokenExpired(String token) {
