@@ -35,9 +35,8 @@ public class AwsConfig {
             String accessKey = dotenv.get("AWS_ACCESS_KEY_ID");
             String secretKey = dotenv.get("AWS_SECRET_ACCESS_KEY");
 
-            if (accessKey == null || secretKey == null) {
+            if (accessKey == null || secretKey == null)
                 throw new RuntimeException("AWS credentials not found in environment variables");
-            }
 
             return StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey));
         }

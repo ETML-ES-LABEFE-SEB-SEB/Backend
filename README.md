@@ -13,15 +13,6 @@ The main features are:
 
 ## Getting Started
 
-### Prerequisites
-
-List all dependencies and their version needed by the project as :
-
-* DataBase Engine (S2)
-* IDE used (IntelliJ)
-* OS supported (Windows 10/11, Linux x64)
-* Virtualization (.JDK, .JRE)
-
 ### Configuration
 
 Currently, setup with H2, no configuration needed.
@@ -30,7 +21,7 @@ Currently, setup with H2, no configuration needed.
 
 ### On dev environment
 
-### Setup AWS
+#### Setup AWS
 Copy the *.env.example* file to *.env*.
 
 Set up the AWS S3 credentials in the *.env* file
@@ -38,8 +29,7 @@ Set up the AWS S3 credentials in the *.env* file
 AWS_ACCESS_KEY_ID=your-access-key
 AWS_SECRET_ACCESS_KEY=your-secret-key
 ```
-
-### AWS CLI (alternative)
+#### AWS CLI (alternative)
 Instead, you can also use AWS CLI:
 
 Install AWS CLI : https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
@@ -53,7 +43,7 @@ Default region name [None]: us-east-1
 Default output format [None]: json
 ```
 
-## Start the app
+#### Start the app
 run this command:
 ```
    mvn clean spring-boot:run
@@ -75,16 +65,28 @@ to retrieve the dependencies, compile and run the program for the first time.
 
 Go to http://localhost:8080/swagger-ui/index.html to test the API.
 
-### On integration environment
+### On integration environment with Docker
 
-/
+Set up the AWS S3 credentials in the *.env* file.
+
+Next, run the container with the following command :
+```terminaloutput
+docker compose up --build
+```
 
 ## Directory structure
 
 ```shell
+├───Auth
+│   ├───DTO
+│   └───Exceptions
 ├───Bid
 │   ├───DTO
 │   └───Exceptions
+├───Data
+│   ├───Config
+│   ├───Services
+│   └───Tasks
 ├───Lot
 │   ├───DTO
 │   └───Exceptions
@@ -94,6 +96,7 @@ Go to http://localhost:8080/swagger-ui/index.html to test the API.
 ├───Member
 │   ├───DTO
 │   └───Exceptions
+├───ResponseAPI
 └───Tag
     ├───DTO
     └───Exceptions
@@ -103,20 +106,6 @@ Go to http://localhost:8080/swagger-ui/index.html to test the API.
 To visualize and manage the content of the AWS S3 server, a GUI tool can help.
 
 You can use : https://s3browser.com/
-
-## Docs
-
-### Use case diagram
-
-<img src="docs/usecase_diagram.png">
-
-### Class diagram
-
-<img src="docs/class_diagram.png">
-
-### MLD diagram
-
-<img src="docs/mld_diagram.png">
 
 ## Collaborate
 

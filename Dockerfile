@@ -8,6 +8,7 @@
 
 ################################################################################
 
+
 # Create a stage for resolving and downloading dependencies.
 FROM eclipse-temurin:21-jdk-jammy as deps
 
@@ -36,6 +37,7 @@ FROM deps as package
 WORKDIR /build
 
 COPY ./src src/
+
 RUN --mount=type=bind,source=pom.xml,target=pom.xml \
     --mount=type=cache,target=/root/.m2 \
     ./mvnw package -DskipTests && \
@@ -86,6 +88,9 @@ COPY --from=extract build/target/extracted/dependencies/ ./
 COPY --from=extract build/target/extracted/spring-boot-loader/ ./
 COPY --from=extract build/target/extracted/snapshot-dependencies/ ./
 COPY --from=extract build/target/extracted/application/ ./
+
+# The .env has to be created by the user with correct credentials for AWS S3 setup
+COPY ./.env .env
 
 EXPOSE 8080
 
