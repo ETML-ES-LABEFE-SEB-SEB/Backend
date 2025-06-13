@@ -1,9 +1,7 @@
-package ch.etmles.Backend;
+package ch.etmles.Backend.Data.Tasks;
 
 import ch.etmles.Backend.Lot.Lot;
-import ch.etmles.Backend.Lot.LotRepository;
 import ch.etmles.Backend.Lot.LotService;
-import ch.etmles.Backend.Lot.LotStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 

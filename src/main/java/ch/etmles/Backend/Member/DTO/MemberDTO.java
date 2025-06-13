@@ -9,6 +9,7 @@ public class MemberDTO {
 
     private UUID id;
     private String username;
+    private String role;
     private String profilePicture;
     private BigDecimal availableWallet;
     private BigDecimal reservedWallet;
@@ -27,6 +28,14 @@ public class MemberDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getProfilePicture() {
@@ -54,18 +63,12 @@ public class MemberDTO {
     }
 
     public MemberDTO() {}
-    public MemberDTO(UUID id, String username, String profilePicture, BigDecimal availableWallet, BigDecimal reservedWallet) {
-        this.setId(id);
-        this.setUsername(username);
-        this.setProfilePicture(profilePicture);
-        this.setAvailableWallet(availableWallet);
-        this.setReservedWallet(reservedWallet);
-    }
 
     public static MemberDTO toDTO(Member member) {
         MemberDTO memberDTO = new MemberDTO();
         memberDTO.setId(member.getId());
         memberDTO.setUsername(member.getUsername());
+        memberDTO.setRole(member.getRole().toString());
         memberDTO.setProfilePicture(member.getProfilePicture());
         memberDTO.setAvailableWallet(member.getAvailableWallet());
         memberDTO.setReservedWallet(member.getReservedWallet());

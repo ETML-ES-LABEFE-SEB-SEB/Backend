@@ -1,4 +1,4 @@
-package ch.etmles.Backend;
+package ch.etmles.Backend.Data.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

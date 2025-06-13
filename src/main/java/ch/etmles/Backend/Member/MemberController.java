@@ -18,12 +18,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static ch.etmles.Backend.apiVersion.API_VERSION;
+import static ch.etmles.Backend.Data.apiVersion.API_VERSION;
 
 @RestController
 @RequestMapping("/" + API_VERSION + "/me")
@@ -35,14 +37,18 @@ public class MemberController {
     private final BidRepository bidRepository;
     private final BidService bidService;
     private final LotService lotService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
-    public MemberController(MemberRepository memberRepository, MemberService memberService, LotRepository lotRepository, BidRepository bidRepository, BidService bidService, LotService lotService) {
+    public MemberController(MemberRepository memberRepository, MemberService memberService, LotRepository lotRepository, BidRepository bidRepository, BidService bidService, LotService lotService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.memberRepository = memberRepository;
         this.memberService = memberService;
         this.lotRepository = lotRepository;
         this.bidRepository = bidRepository;
         this.bidService = bidService;
         this.lotService = lotService;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
     }
 
     /* curl sample :
