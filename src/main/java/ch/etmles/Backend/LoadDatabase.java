@@ -52,7 +52,7 @@ public class LoadDatabase {
             categoryRepository.saveAll(List.of(musique, guitare, voiture, photo, reflex, gaming, controller));
 
             // ---------- Members ----------
-            Member member1 = createMember("Tartempion", "https://picsum.photos/id/103/200", "975", "375", passwordEncoder);
+            Member member1 = createMember("Tartempion", "https://picsum.photos/id/103/200", "975", "1030", passwordEncoder);
             Member member2 = createMember("Toutankhamon", "https://picsum.photos/id/64/200", "5000", "0", passwordEncoder);
             Member member3 = createMember("Frangipanus", "https://picsum.photos/id/28/200", "30", "655", passwordEncoder);
             Member member4 = createMember("NoMoney", "https://picsum.photos/id/77/200", "0", "0", passwordEncoder);
