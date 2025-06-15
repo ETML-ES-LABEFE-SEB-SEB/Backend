@@ -54,7 +54,7 @@ public class LoadDatabase {
             // ---------- Members ----------
             Member member1 = createMember("Tartempion", "https://picsum.photos/id/103/200", "975", "1030", passwordEncoder);
             Member member2 = createMember("Toutankhamon", "https://picsum.photos/id/64/200", "5000", "25", passwordEncoder);
-            Member member3 = createMember("Frangipanus", "https://picsum.photos/id/28/200", "30", "655", passwordEncoder);
+            Member member3 = createMember("Frangipanus", "https://picsum.photos/id/28/200", "30", "0", passwordEncoder);
             Member member4 = createMember("NoMoney", "https://picsum.photos/id/77/200", "0", "0", passwordEncoder);
             Member member5 = createMember("TooMuchMoney", "https://picsum.photos/id/44/200", "100000", "0", passwordEncoder);
             memberRepository.saveAll(List.of(member1, member2, member3, member4, member5));
