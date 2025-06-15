@@ -74,6 +74,15 @@ Next, run the container with the following command :
 docker compose up --build
 ```
 
+#### Container port
+The default port of the container is **8080:8080**
+
+You can configure it by editing the *compose.yaml* file:
+```terminaloutput
+    ports:
+      - 8080:8080
+```
+
 ## Directory structure
 
 ```shell
