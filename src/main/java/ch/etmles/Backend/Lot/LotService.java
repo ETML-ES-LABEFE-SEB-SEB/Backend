@@ -57,7 +57,7 @@ public class LotService {
     }
 
     @Transactional
-    public List<Lot> getExpiredActivatedLots()
+    public List<Lot> getExpiredLots()
     {
         List<Lot> lots = lotRepository.getLotByStatusAndEndDateBefore(LotStatus.ACTIVATED, LocalDateTime.now());
         return lots;
