@@ -67,11 +67,36 @@ Go to http://localhost:8080/swagger-ui/index.html to test the API.
 
 ### On integration environment with Docker
 
+edit the file *application.properties* ans set the profile to *prod* :
+```terminaloutput
+spring.profiles.active=prod
+```
+
+Set your desired settings for **Database** and **Cors** into the *application-prod.properties* :
+```terminaloutput
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost:3306/ecommerce_db
+spring.datasource.username=root
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=update
+cors.allowed-origins=https://mon-site.com
+```
+
+
 Set up the AWS S3 credentials in the *.env* file.
 
 Next, run the container with the following command :
 ```terminaloutput
 docker compose up --build
+```
+
+#### Container port
+The default port of the container is **8080:8080**
+
+You can configure it by editing the *compose.yaml* file:
+```terminaloutput
+    ports:
+      - 8080:8080
 ```
 
 ## Directory structure

@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestControllerAdvice
 public class LotNotFoundAdvice {
-    @ResponseBody
     @ExceptionHandler(LotNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
     String lotNotFoundHandler(LotNotFoundException ex) { return ex.getMessage(); }
 }

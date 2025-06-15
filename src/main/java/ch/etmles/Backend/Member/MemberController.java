@@ -118,7 +118,7 @@ public class MemberController {
 
         // Reject if currentUser owns the lot
         if(memberService.lotIsOwnByCurrentMember(lotToBidOn))
-            throw new LotIsOwnByCurrentMemberException(lotToBidOn.getId());
+            throw new LotIsOwnByCurrentMemberException();
 
         Bid newBid = new Bid();
         newBid.setBidUpLot(lotToBidOn);

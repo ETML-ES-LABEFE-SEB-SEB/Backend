@@ -39,8 +39,8 @@ public class BidService {
             if(highest.getBidValue().compareTo(bid.getBidValue()) < 0) {
 
                 // Remove the bid value from the highest bidder reserved wallet
-                highest.getOwner().setReservedWallet(bid.getOwner().getReservedWallet().subtract(highest.getBidValue()));
-                highest.getOwner().setAvailableWallet(bid.getOwner().getAvailableWallet().add(highest.getBidValue()));
+                highest.getOwner().setReservedWallet(highest.getOwner().getReservedWallet().subtract(highest.getBidValue()));
+                highest.getOwner().setAvailableWallet(highest.getOwner().getAvailableWallet().add(highest.getBidValue()));
 
                 // Update the lot
                 bid.getBidUpLot().setCurrentPrice(bid.getBidValue());
