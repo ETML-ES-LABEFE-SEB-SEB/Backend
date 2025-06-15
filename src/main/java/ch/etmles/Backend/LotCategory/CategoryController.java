@@ -1,10 +1,12 @@
 package ch.etmles.Backend.LotCategory;
 
+import ch.etmles.Backend.Data.ResponseAPI.ListApiResponse;
+import ch.etmles.Backend.LotCategory.DTO.CategoryHierarchyDTO;
 import ch.etmles.Backend.LotCategory.DTO.SummaryCategoryDTO;
-import ch.etmles.Backend.ResponseAPI.ListPageApiResponse;
+import ch.etmles.Backend.Data.ResponseAPI.ListPageApiResponse;
 import ch.etmles.Backend.LotCategory.DTO.CategoryDTO;
 import ch.etmles.Backend.LotCategory.Exceptions.CategoryNotFoundException;
-import ch.etmles.Backend.ResponseAPI.SingleApiResponse;
+import ch.etmles.Backend.Data.ResponseAPI.SingleApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +22,10 @@ import static ch.etmles.Backend.Data.apiVersion.API_VERSION;
 public class CategoryController {
 
     private final CategoryRepository repository;
+    private final CategoryService service;
 
-    public CategoryController(CategoryRepository categoryRepository) {
+    public CategoryController(CategoryRepository categoryRepository, CategoryService categoryService) {
+        this.service = categoryService;
         this.repository = categoryRepository;
     }
 
@@ -34,6 +38,13 @@ public class CategoryController {
             summaryCategories.add(SummaryCategoryDTO.toDTO(category));
         }
         return new ListPageApiResponse<SummaryCategoryDTO>(summaryCategories);
+    }
+
+    @GetMapping("hierarchical")
+    ListApiResponse<CategoryHierarchyDTO> getCategoriesWithHierarchy()
+    {
+        List<CategoryHierarchyDTO> categoryWithHierarchy = service.getCategoryHierarchy();
+        return new ListApiResponse<>(categoryWithHierarchy);
     }
 
     /* curl sample :

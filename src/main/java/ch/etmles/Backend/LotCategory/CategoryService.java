@@ -1,10 +1,9 @@
 package ch.etmles.Backend.LotCategory;
 
+import ch.etmles.Backend.LotCategory.DTO.CategoryHierarchyDTO;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class CategoryService {
@@ -27,5 +26,28 @@ public class CategoryService {
     {
         Optional<Category> category = categoryRepository.findById(categoryId);
         return category.orElse(null);
+    }
+
+    public List<CategoryHierarchyDTO> getCategoryHierarchy() {
+        List<Category> allCategories = categoryRepository.findAll();
+
+        // Map UUID -> DTO
+        Map<UUID, CategoryHierarchyDTO> dtoMap = new HashMap<>();
+        for (Category category : allCategories) {
+            dtoMap.put(category.getId(), new CategoryHierarchyDTO(category.getId(), category.getName()));
+        }
+
+        // Construction de la hiérarchie
+        List<CategoryHierarchyDTO> roots = new ArrayList<>();
+        for (Category category : allCategories) {
+            CategoryHierarchyDTO dto = dtoMap.get(category.getId());
+            if (category.getParent() != null) {
+                dtoMap.get(category.getParent().getId()).addChild(dto);
+            } else {
+                roots.add(dto);
+            }
+        }
+
+        return roots;
     }
 }
