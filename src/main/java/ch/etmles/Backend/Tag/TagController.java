@@ -1,7 +1,7 @@
 package ch.etmles.Backend.Tag;
 
-import ch.etmles.Backend.ResponseAPI.ListPageApiResponse;
-import ch.etmles.Backend.ResponseAPI.SingleApiResponse;
+import ch.etmles.Backend.Data.ResponseAPI.ListPageApiResponse;
+import ch.etmles.Backend.Data.ResponseAPI.SingleApiResponse;
 import ch.etmles.Backend.Tag.DTO.TagDTO;
 import ch.etmles.Backend.Tag.Exceptions.TagNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,11 +1,11 @@
 package ch.etmles.Backend.Lot;
 
+import ch.etmles.Backend.Data.ResponseAPI.*;
 import ch.etmles.Backend.Data.Services.AwsS3Service;
 import ch.etmles.Backend.Data.Base64DecodedMultipartFile;
 import ch.etmles.Backend.Bid.DTO.BidDTO;
 import ch.etmles.Backend.Lot.DTO.SortOptionDTO;
 import ch.etmles.Backend.LotCategory.CategoryRepository;
-import ch.etmles.Backend.ResponseAPI.*;
 import ch.etmles.Backend.Lot.DTO.LotSearchDTO;
 import ch.etmles.Backend.LotCategory.Category;
 import ch.etmles.Backend.LotCategory.DTO.CategoryDTO;

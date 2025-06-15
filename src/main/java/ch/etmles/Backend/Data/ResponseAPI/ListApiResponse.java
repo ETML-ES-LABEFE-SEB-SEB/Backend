@@ -1,4 +1,4 @@
-package ch.etmles.Backend.ResponseAPI;
+package ch.etmles.Backend.Data.ResponseAPI;
 
 import java.util.List;
 

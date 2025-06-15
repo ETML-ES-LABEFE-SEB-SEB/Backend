@@ -1,4 +1,4 @@
-package ch.etmles.Backend.ResponseAPI;
+package ch.etmles.Backend.Data.ResponseAPI;
 
 import org.springframework.data.domain.Page;
 

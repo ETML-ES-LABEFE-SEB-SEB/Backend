@@ -7,7 +7,7 @@ import ch.etmles.Backend.Member.Exceptions.MemberAlreadyExistsException;
 import ch.etmles.Backend.Member.Member;
 import ch.etmles.Backend.Member.MemberRepository;
 import ch.etmles.Backend.Member.MemberRole;
-import ch.etmles.Backend.ResponseAPI.SingleApiResponse;
+import ch.etmles.Backend.Data.ResponseAPI.SingleApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
