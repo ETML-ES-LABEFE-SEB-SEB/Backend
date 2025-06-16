@@ -80,10 +80,8 @@ public class LotService {
             // Set the lot to finished status
             lot.get().setStatus(LotStatus.FINISHED);
             lotRepository.save(lot.get());
-
             return true;
         }
-
         return false;
     }
 

@@ -19,6 +19,7 @@ public class Member implements UserDetails {
     private @Id
     @GeneratedValue UUID id;
 
+    @Column(unique = true)
     private String username;
     private String passwordHash;
     private MemberRole role;
