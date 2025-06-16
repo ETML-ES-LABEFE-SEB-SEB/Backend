@@ -110,6 +110,7 @@ You can configure it by editing the *compose.yaml* file:
 │   └───Exceptions
 ├───Data
 │   ├───Config
+│   ├───ResponseAPI
 │   ├───Services
 │   └───Tasks
 ├───Lot
@@ -121,7 +122,6 @@ You can configure it by editing the *compose.yaml* file:
 ├───Member
 │   ├───DTO
 │   └───Exceptions
-├───ResponseAPI
 └───Tag
     ├───DTO
     └───Exceptions
